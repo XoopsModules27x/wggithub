@@ -1,0 +1,113 @@
+===================================================================
+2025/06/21 Version 1.5.3 Beta1
+===================================================================
+- use Composer for GitHub API library & moving it to /vendor (mamba)
+- namespace cosmetics (mamba)
+
+===================================================================
+2023/04/13 Version 1.5.2 RC1
+===================================================================
+ - updates smarty 3 (goffy)
+ - fixed smarty errors (mamba/goffy)
+ - updates for XOOPS 2.5.11 Stable (goffy)
+
+===================================================================
+2023/03/20 Version 1.5.1 RC1
+===================================================================
+ - fixed unused block types (goffy)
+
+===================================================================
+2022/08/08 Version 1.5.0 Stable
+===================================================================
+ - updated reading data from github: pulled_at/updated_at (goffy)
+ - fixed bug in MigrateHelper (goffy)
+
+===================================================================
+2021/11/17 Version 1.5.0 RC1
+===================================================================
+ - semantic versioning (mamba/goffy)
+ - fixed missing criteria in search (alain01/goffy)
+ - update common files (goffy)
+ - security.md (goffy)
+ - added new update proc (goffy)
+ - code cleaning (goffy)
+ - added function qualifiers (goffy)
+ - update to php8 (goffy)
+ - replaced Common/XoopsConfirm by Common/Confirm (mamba/goffy)
+ - uninstall with bak-file creation (mamba/goffy)
+ - adapted update due to new semantic versioning (goffy)
+ - updated reading data from github: pulled_at/updated_at (goffy)
+ 
+===================================================================
+2021/03/31 Version 1.04 RC1
+===================================================================
+ - added preferences for breadcrumb display (alain01/goffy)
+ - replaced index.html by index.php (alain01/goffy)
+ - permanent display of filter with enabled/disabled buttons (alain01/goffy)
+ - added new bt4 templates (alain01/goffy)
+ - fixed bug with wrong icon and link (alain01/goffy)
+ - added extended test of API connection (goffy)
+ - fixed bug in search (alain01/goffy)
+ - updated template to show single repo (alain01/goffy)
+ 
+===================================================================
+2021/03/31 Version 1.03 Final
+===================================================================
+ - added bt4 templates (alain01/goffy)
+ - moved to final (goffy)
+ 
+===================================================================
+2021/01/13 Version 1.03 RC2
+===================================================================
+ - added option to show/hide non-releases (alain01/goffy)
+ - added filters on admin side (alain01/goffy)
+ - added filter status (alain01/goffy)
+ - fixed problem with start/limit (alain01/goffy)
+ - added autoapprove (alain01/goffy)
+ - fixed certificate problem/https://github.com/milo/github-api/issues/32 (richard/goffy)
+ - moved filter releases to preferences (alain01/goffy)
+ - fixed bug with missing constants (alain01/goffy)
+ - fixed bug in js (alain01/goffy)
+ - changed output of error when request data from github (alain01/goffy)
+ - removed unnecessary add buttons (goffy)
+ - resorted tabs in admin area (alain01/goffy)
+
+===================================================================
+2021/01/13 Version 1.03 RC1
+===================================================================
+ - added sorting for directories (goffy)
+ - added download repository content from GitHub (goffy)
+ - fixed problem in version check (alain01/goffy)
+ - fixed missing smarty default value (goffy)
+
+===================================================================
+2020/12/23 Version 1.02 beta 1
+===================================================================
+ - removed unnecessary module settings (goffy)
+ - cleaned up lang files (goffy)
+ - added status offline (goffy)
+ - added autochange from http: into https: for image sources (goffy)
+ - added start/limit to forms (goffy)
+ - ignore error when no readme/release exists (goffy)
+ - added description for directories (goffy)
+ - added content type for directories (goffy)
+ - added link creation for gitbook (goffy)
+ - removed unnecessary files (goffy)
+ - replacement of relative paths for gitbook (goffy)
+
+===================================================================
+2020/10/11 Version 1.01 alpha
+===================================================================
+ - implemented filter and sorting (mage/goffy)
+ - updated permission rules (goffy)
+ - added field repo_readme (goffy)
+ - added set primary for settings (goffy)
+ - rebuild github access (goffy)
+ - added manually start update (goffy)
+ - replaced table requests by table logs (goffy)
+ - added manually start update directory in admin area (goffy)
+
+==============================================================
+1.0 [2020/11/21 11:35:55]
+==============================================================
+ - Original release wggithub (goffy)
