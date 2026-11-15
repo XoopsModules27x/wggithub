@@ -39,11 +39,12 @@ class WggithubCorePreload extends \XoopsPreloadItem
      */
     private static function initializeAutoloader(): void
     {
+        $dirName = \dirname(__DIR__);
         $autoloader = \dirname(__DIR__) . self::AUTOLOADER_PATH;
 
         if (!\file_exists($autoloader)) {
             // Throw an exception for better error handling
-            throw new \RuntimeException("xwhoops25/vendor/autoload.php not found, was 'composer install' done?");
+            throw new \RuntimeException($dirName . "/vendor/autoload.php not found, was 'composer install' done?");
         }
 
         require_once $autoloader;

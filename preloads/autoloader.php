@@ -1,5 +1,7 @@
 <?php
 
+require_once \dirname(__DIR__) . '/vendor/autoload.php';
+
 /**
  * @see http://www.php-fig.org/psr/psr-4/examples/
  */

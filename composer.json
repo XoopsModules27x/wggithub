@@ -1,0 +1,46 @@
+{
+    "name": "xoops/wggithub",
+    "type": "xoops-module",
+    "description": "GitHub integration for XOOPS 2.7+",
+    "keywords": ["xoops", "xoops-module", "github", "integration"],
+    "homepage": "https://github.com/XoopsModules27x/wggithub",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Gottfried Gabor",
+            "email": "gottfried.gabor@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/XoopsModules27x/wggithub/issues",
+        "source": "https://github.com/XoopsModules27x/wggithub"
+    },
+    "require": {
+        "php": ">=8.2",
+        "milo/github-api": "^2.0"
+    },
+    "require-dev": {
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true
+        }
+    },
+    "scripts": {
+        "analyse": "phpstan analyse --configuration=phpstan.neon.dist --memory-limit=512M",
+        "analyse:baseline": "phpstan analyse --configuration=phpstan.neon.dist --generate-baseline=phpstan-baseline.neon --memory-limit=512M",
+        "cs:check": "php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php",
+        "cs:fix": "php-cs-fixer fix --config=.php-cs-fixer.dist.php",
+        "rector": "rector process --dry-run",
+        "rector:fix": "rector process",
+        "test": "phpunit --configuration=phpunit.xml.dist",
+        "qa": [
+            "@cs:check",
+            "@analyse",
+            "@rector",
+            "@test"
+        ]
+    }
+}
