@@ -22,6 +22,7 @@ namespace XoopsModules\Wggithub\Github;
 
 use Milo\Github\{
     Api,
+    Http,
     OAuth
 };
 use XoopsModules\Wggithub\{
@@ -97,7 +98,7 @@ class GithubClient extends Api
     }
 
     public function testApi2($url) {
-        $api = new Api;
+        $api = $this->createApi();
 
         $token = new OAuth\Token('{myKey}', 'bearer', ['repo', 'user', 'public_repo']);
         $api->setToken($token);
@@ -245,14 +246,14 @@ class GithubClient extends Api
      * @param bool $skipError
      * @return array|bool
      */
-    public function get($url, $skipError = false)
+    public function _get($url, $skipError = false)
     {
         $error = false;
         $errMsg = '';
 
         $logsHandler = $this->helper->getHandler('Logs');
         $logsHandler->updateTableLogs(Constants::LOG_TYPE_REQUEST, $url, 'START');
-        $api = new Api;
+        $api = $this->createApi();
         $token = new OAuth\Token($this->tokenAuth, 'bearer', ['repo', 'user', 'public_repo']);
         $api->setToken($token);
         $response = $api->get($url);
@@ -297,6 +298,22 @@ class GithubClient extends Api
         }
 
         return $data;
+    }
+
+    /**
+     * Honor PHP's configured CA bundle instead of Milo's bundled certificate chain.
+     */
+    private function createApi(): Api
+    {
+        if (\extension_loaded('curl')) {
+            $caFile = \ini_get('curl.cainfo') ?: \ini_get('openssl.cafile');
+            $client = new Http\CurlClient($caFile ? [\CURLOPT_CAINFO => $caFile] : null);
+        } else {
+            $caFile = \ini_get('openssl.cafile');
+            $client = new Http\StreamClient($caFile ? ['cafile' => $caFile] : null);
+        }
+
+        return new Api($client);
     }
 
     /**
