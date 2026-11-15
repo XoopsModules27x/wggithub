@@ -28,8 +28,26 @@ For access to GitHub you need a GitHub account and you have to enter your user n
 ### Require:
 - XOOPS 2.5.11;
 - XOOPS Admin 1.2;
-- PHP 7.4 or higher;
+- PHP 8.2 or higher;
 - MySQL 5.5; -> Minimum Recommended Using InnoDB Version 5.1 or Later
+
+### Installation and checks
+
+The release includes its Composer dependencies. The module supplies its own CA
+bundle, request timeout and redirect protection without modifying Milo's files.
+
+Run `composer qa` for the offline compatibility checks. `composer test:transport`
+makes a verified HTTPS request to GitHub. To run the database integration checks,
+set `WGGITHUB_TEST_DB_HOST` and optionally `WGGITHUB_TEST_DB_USER`,
+`WGGITHUB_TEST_DB_PASS` and `WGGITHUB_TEST_DB_PORT`, then run
+`composer test:database` inside a XOOPS installation. The database account needs
+permission to create and drop a disposable database; existing site tables are
+never used.
+
+After deploying this update, run the module update in XOOPS administration to
+install the unique repository node ID key. If legacy duplicates exist, the update
+stops without deleting or merging them. Resolve those duplicates while preserving
+repository references, then rerun the module update.
 
 # Info
 

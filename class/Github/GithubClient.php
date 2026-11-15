@@ -58,12 +58,14 @@ class GithubClient extends Api
     /**
      * Constructor
      *
-     * @param null
+     * @param Http\IClient|null $client
      */
-    public function __construct()
+    public function __construct(?Http\IClient $client = null)
     {
+        parent::__construct($client ?? $this->createHttpClient());
         $this->helper = \XoopsModules\Wggithub\Helper::getInstance();
         $this->getSetting();
+        $this->setToken(new OAuth\Token($this->tokenAuth, 'bearer', ['repo', 'user', 'public_repo']));
     }
 
     /**
@@ -98,7 +100,7 @@ class GithubClient extends Api
     }
 
     public function testApi2($url) {
-        $api = $this->createApi();
+        $api = new Api($this->createHttpClient());
 
         $token = new OAuth\Token('{myKey}', 'bearer', ['repo', 'user', 'public_repo']);
         $api->setToken($token);
@@ -253,10 +255,7 @@ class GithubClient extends Api
 
         $logsHandler = $this->helper->getHandler('Logs');
         $logsHandler->updateTableLogs(Constants::LOG_TYPE_REQUEST, $url, 'START');
-        $api = $this->createApi();
-        $token = new OAuth\Token($this->tokenAuth, 'bearer', ['repo', 'user', 'public_repo']);
-        $api->setToken($token);
-        $response = $api->get($url);
+        $response = $this->get($url);
         $code = $response->getCode();
         if (\in_array($code, [200, 201], true)) {
             $logsHandler->updateTableLogs(Constants::LOG_TYPE_REQUEST, $url, 'OK');
@@ -294,26 +293,31 @@ class GithubClient extends Api
             \redirect_header('index.php?op=api_error&amp;message='. $message . '&amp;url='. $url, 5, $message);
             //throw new \RuntimeException('"' . $message . '"');
         } else {
-            $data = (array)$api->decode($response);
+            $data = (array)$this->decode($response);
         }
 
         return $data;
     }
 
     /**
-     * Honor PHP's configured CA bundle instead of Milo's bundled certificate chain.
+     * Use PHP's CA configuration, with a shipped Mozilla bundle as the fallback.
      */
-    private function createApi(): Api
+    private function createHttpClient(): Http\IClient
     {
+        $fallbackCaFile = __DIR__ . '/ca-chain.crt';
         if (\extension_loaded('curl')) {
-            $caFile = \ini_get('curl.cainfo') ?: \ini_get('openssl.cafile');
-            $client = new Http\CurlClient($caFile ? [\CURLOPT_CAINFO => $caFile] : null);
-        } else {
-            $caFile = \ini_get('openssl.cafile');
-            $client = new Http\StreamClient($caFile ? ['cafile' => $caFile] : null);
+            $caFile = \ini_get('curl.cainfo') ?: \ini_get('openssl.cafile') ?: $fallbackCaFile;
+            return new HttpClient(new Http\CurlClient([\CURLOPT_CAINFO => $caFile, \CURLOPT_TIMEOUT => 30]));
         }
 
-        return new Api($client);
+        $caFile = \ini_get('openssl.cafile') ?: $fallbackCaFile;
+        $client = new Http\StreamClient(['cafile' => $caFile]);
+        // An empty Expect header suppresses cURL's default, but is invalid on the wire.
+        $client->onRequest(static function (Http\Request $request): void {
+            $request->setHeader('Expect', null);
+        });
+
+        return new HttpClient($client);
     }
 
     /**

@@ -44,7 +44,7 @@ class WggithubCorePreload extends \XoopsPreloadItem
 
         if (!\file_exists($autoloader)) {
             // Throw an exception for better error handling
-            throw new \RuntimeException($dirName . "/vendor/autoload.php not found, was 'composer install' done?");
+            throw new \UnexpectedValueException($dirName . "/vendor/autoload.php not found, was 'composer install' done?");
         }
 
         require_once $autoloader;

@@ -20,26 +20,21 @@
         "php": ">=8.2",
         "milo/github-api": "^2.0"
     },
-    "require-dev": {
-    },
     "config": {
-        "sort-packages": true,
-        "allow-plugins": {
-            "phpstan/extension-installer": true
-        }
+        "sort-packages": true
     },
     "scripts": {
-        "analyse": "phpstan analyse --configuration=phpstan.neon.dist --memory-limit=512M",
-        "analyse:baseline": "phpstan analyse --configuration=phpstan.neon.dist --generate-baseline=phpstan-baseline.neon --memory-limit=512M",
-        "cs:check": "php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php",
-        "cs:fix": "php-cs-fixer fix --config=.php-cs-fixer.dist.php",
-        "rector": "rector process --dry-run",
-        "rector:fix": "rector process",
-        "test": "phpunit --configuration=phpunit.xml.dist",
+        "test": [
+            "@php tests/github-client-compatibility.php",
+            "@php tests/github-client-redirects.php",
+            "@php -d curl.cainfo= -d openssl.cafile= tests/github-client-options.php",
+            "@php -d curl.cainfo=vendor/milo/github-api/src/ca-chain.crt -d openssl.cafile= tests/github-client-options.php configured",
+            "@php -d curl.cainfo= -d openssl.cafile=vendor/milo/github-api/src/ca-chain.crt tests/github-client-options.php configured"
+        ],
+        "test:transport": "@php tests/github-client-transport.php",
+        "test:database": "@php tests/repository-import.php",
         "qa": [
-            "@cs:check",
-            "@analyse",
-            "@rector",
+            "@composer validate --strict",
             "@test"
         ]
     }

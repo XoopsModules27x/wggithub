@@ -56,6 +56,10 @@ function xoops_module_update_wggithub($module, $prev_version = null)
 {
     require \dirname(__DIR__) . '/preloads/autoloader.php';
 
+    if (!wggithub_check_repository_nodeids($module)) {
+        return false;
+    }
+
     $moduleDirName = $module->dirname();
 
     //wggithub_check_db($module);
@@ -93,7 +97,10 @@ function xoops_module_update_wggithub($module, $prev_version = null)
     \copy($fileYaml, $fileYaml2);
 
     // run standard procedure for db migration
-    $migrate->synchronizeSchema();
+    if (!$migrate->synchronizeSchema()) {
+        $module->setErrors('Repository schema update failed; the node ID unique key could not be installed.');
+        return false;
+    }
 
     $errors = $module->getErrors();
     if (!empty($errors)) {
@@ -102,6 +109,28 @@ function xoops_module_update_wggithub($module, $prev_version = null)
 
     return true;
 
+}
+
+/**
+ * Refuse an upgrade that would require deleting or merging existing repositories.
+ */
+function wggithub_check_repository_nodeids($module): bool
+{
+    $db = $GLOBALS['xoopsDB'];
+    $table = $db->prefix('wggithub_repositories');
+    $sql = "SELECT MIN(repo_id) AS repo_id FROM `$table`"
+        . ' GROUP BY CAST(repo_nodeid AS BINARY) HAVING COUNT(*) > 1 OR MAX(OCTET_LENGTH(repo_nodeid)) > 255 LIMIT 1';
+    $result = $db->query($sql);
+    if (!$db->isResultSet($result) || !($result instanceof \mysqli_result)) {
+        $module->setErrors('Cannot check repository node IDs; the schema update was stopped.');
+        return false;
+    }
+    if (false !== $db->fetchArray($result)) {
+        $module->setErrors('Duplicate or oversized GitHub node IDs exist. Resolve them while preserving related data, then update the module again. No repositories were changed.');
+        return false;
+    }
+
+    return true;
 }
 
 /**

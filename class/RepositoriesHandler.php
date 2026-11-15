@@ -185,8 +185,25 @@ class RepositoriesHandler extends \XoopsPersistableObjectHandler
                     $repositoriesObj->setVar('repo_datecreated', \time());
                     $repositoriesObj->setVar('repo_submitter', $submitter);
                     // Insert Data
-                    if ($repositoriesHandler->insert($repositoriesObj)) {
-                        $newRepoId = $repositoriesObj->getNewInsertedIdRepositories();
+                    try {
+                        $inserted = $repositoriesHandler->insert($repositoriesObj);
+                        $insertError = $inserted ? 0 : $this->db->errno();
+                    } catch (\mysqli_sql_exception $exception) {
+                        if (1062 !== $exception->getCode()) {
+                            throw $exception;
+                        }
+                        $inserted = false;
+                        $insertError = 1062;
+                    }
+                    if (!$inserted && 0 === $repoId && 1062 === $insertError
+                        && $repositoriesHandler->getCount($crRepositories) > 0
+                    ) {
+                        // The winning importer owns this node and its related updates.
+                        ++$reposNb;
+                        continue;
+                    }
+                    if ($inserted) {
+                        $newRepoId = $repositoriesObj->getVar('repo_id');
                         if (0 == $repoId) {
                             $repoId = $newRepoId;
                         }

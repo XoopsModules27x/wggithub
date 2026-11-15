@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4c7dbf2bd0a4e6c0dea211b77e168b23",
+    "content-hash": "cdf841fe615f2b1a5b9b2234c3781fb5",
     "packages": [
         {
             "name": "milo/github-api",
