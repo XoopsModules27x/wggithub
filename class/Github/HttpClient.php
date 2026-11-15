@@ -71,26 +71,31 @@ final class HttpClient extends Http\AbstractClient
                 $basePath = $source['path'] ?? '/';
                 $path = substr($basePath, 0, strrpos($basePath, '/') + 1) . $path;
             }
-            $segments = [];
-            foreach (explode('/', $path) as $segment) {
-                if ($segment === '..') {
-                    if (count($segments) > 1) {
-                        array_pop($segments);
-                    }
-                } elseif ($segment !== '.') {
-                    $segments[] = $segment;
-                }
-            }
-            $path = implode('/', $segments);
-            if (in_array($reference['path'], ['.', '..'], true)
-                || str_ends_with($reference['path'], '/.') || str_ends_with($reference['path'], '/..')
-            ) {
-                $path .= '/';
-            }
-            $path = $path === '' ? '/' : $path;
+            $path = self::removeDotSegments($path);
         }
         return $source['scheme'] . '://' . $source['host'] . (isset($source['port']) ? ':' . $source['port'] : '')
             . $path . ($query !== null ? '?' . $query : '')
             . (isset($reference['fragment']) ? '#' . $reference['fragment'] : '');
+    }
+
+    /** RFC 3986 section 5.2.4; a trailing "." or ".." segment leaves a directory path. */
+    private static function removeDotSegments(string $path): string
+    {
+        $segments = [];
+        foreach (explode('/', $path) as $segment) {
+            if ($segment === '..') {
+                if (count($segments) > 1) {
+                    array_pop($segments);
+                }
+            } elseif ($segment !== '.') {
+                $segments[] = $segment;
+            }
+        }
+        $result = implode('/', $segments);
+        if (str_ends_with($path, '/.') || str_ends_with($path, '/..')) {
+            $result .= '/';
+        }
+
+        return $result === '' ? '/' : $result;
     }
 }
