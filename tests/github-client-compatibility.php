@@ -30,12 +30,13 @@ Helper::$handlers['Logs'] = new class {
 };
 $transport = new class extends Http\AbstractClient {
     public int $code = 200;
+    public string $body = '{"ok":true}';
     public array $requests = [];
 
     protected function process(Http\Request $request): Http\Response
     {
         $this->requests[] = $request;
-        return new Http\Response($this->code, ['Content-Type' => 'application/json'], '{"ok":true}');
+        return new Http\Response($this->code, ['Content-Type' => 'application/json'], $this->body);
     }
 };
 $instance = new GithubClient($transport);
@@ -44,6 +45,10 @@ wggithubCheck($transport->requests[0]->getHeader('Authorization') === 'token tes
 $instance->setToken(new Milo\Github\OAuth\Token('override-token', 'bearer', ['repo']));
 wggithubCheck($instance->_get('/user') === ['ok' => true], 'Module helper must keep decoded responses.');
 wggithubCheck($transport->requests[1]->getHeader('Authorization') === 'token override-token', 'Module helper must honor the token already configured on the client.');
+// List endpoints (orgs/x/repos) return arrays of objects; handlers index them as arrays.
+$transport->body = '[{"node_id":"R_1","fork":false,"owner":{"login":"o"}}]';
+$repos = $instance->getOrgRepositories('o');
+wggithubCheck(is_array($repos[0]) && $repos[0]['node_id'] === 'R_1' && $repos[0]['owner']['login'] === 'o', 'Nested API objects must decode to arrays.');
 $transport->code = 404;
 wggithubCheck($instance->getReadme('owner', 'repo') === false, 'Optional missing readmes must still be skipped.');
 

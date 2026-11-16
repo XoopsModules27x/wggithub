@@ -65,7 +65,10 @@ class GithubClient extends Api
         parent::__construct($client ?? $this->createHttpClient());
         $this->helper = \XoopsModules\Wggithub\Helper::getInstance();
         $this->getSetting();
-        $this->setToken(new OAuth\Token($this->tokenAuth, 'bearer', ['repo', 'user', 'public_repo']));
+        // An empty token would still send "Authorization: token " and GitHub answers 401; go anonymous instead.
+        if ('' !== \trim((string)$this->tokenAuth)) {
+            $this->setToken(new OAuth\Token($this->tokenAuth, 'bearer', ['repo', 'user', 'public_repo']));
+        }
     }
 
     /**
@@ -293,7 +296,8 @@ class GithubClient extends Api
             \redirect_header('index.php?op=api_error&amp;message='. $message . '&amp;url='. $url, 5, $message);
             //throw new \RuntimeException('"' . $message . '"');
         } else {
-            $data = (array)$this->decode($response);
+            // Milo decodes to stdClass; the handlers index nested items as arrays, so decode associatively.
+            $data = (array)\json_decode($response->getContent(), true, 512, \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR);
         }
 
         return $data;

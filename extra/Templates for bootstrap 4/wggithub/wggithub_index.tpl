@@ -37,7 +37,7 @@
                     <{$smarty.const._MA_WGGITHUB_INDEX_DESC}>
                 </div>
             </div>    
-            <p class="tabcontent-lastupdate"><{$smarty.const._MA_WGGITHUB_INDEX_LASTUPDATE}>: <{$lastUpdate}> GMT</p>
+            <p class="tabcontent-lastupdate"><{$smarty.const._MA_WGGITHUB_INDEX_LASTUPDATE}>: <{$lastUpdate|default:'-'}> GMT</p>
             <{if $apiexceed|default:''}>
                 <p><{$smarty.const._MA_WGGITHUB_READGH_ERROR_APILIMIT}></p>
             <{elseif $apierror|default:''}>
