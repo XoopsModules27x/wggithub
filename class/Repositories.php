@@ -40,7 +40,7 @@ class Repositories extends \XoopsObject
     public function __construct()
     {
         $this->initVar('repo_id', \XOBJ_DTYPE_INT);
-        $this->initVar('repo_nodeid', \XOBJ_DTYPE_TXTBOX);
+        $this->initVar('repo_nodeid', \XOBJ_DTYPE_TXTBOX, null, false, 255);
         $this->initVar('repo_user', \XOBJ_DTYPE_TXTBOX);
         $this->initVar('repo_name', \XOBJ_DTYPE_TXTBOX);
         $this->initVar('repo_fullname', \XOBJ_DTYPE_TXTBOX);

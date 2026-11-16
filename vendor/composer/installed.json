@@ -1,0 +1,57 @@
+{
+    "packages": [
+        {
+            "name": "milo/github-api",
+            "version": "v2.0.4",
+            "version_normalized": "2.0.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/milo/github-api.git",
+                "reference": "429f23cf3ca9ac948fdc3f946d29089b3ecbbc96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/milo/github-api/zipball/429f23cf3ca9ac948fdc3f946d29089b3ecbbc96",
+                "reference": "429f23cf3ca9ac948fdc3f946d29089b3ecbbc96",
+                "shasum": ""
+            },
+            "require": {
+                "php": "8.0 - 8.5"
+            },
+            "require-dev": {
+                "nette/tester": "^2.4"
+            },
+            "suggest": {
+                "ext-curl": "Allows you to use Http\\CurlClient"
+            },
+            "time": "2025-11-24T04:21:01+00:00",
+            "published-time": "2025-11-24T16:18:07+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "classmap": [
+                    "src/Github/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Miloslav Hůla",
+                    "email": "miloslav.hula@gmail.com",
+                    "homepage": "https://github.com/milo"
+                }
+            ],
+            "description": "GitHub API easy access",
+            "support": {
+                "issues": "https://github.com/milo/github-api/issues",
+                "source": "https://github.com/milo/github-api/tree/v2.0.4"
+            },
+            "install-path": "../milo/github-api"
+        }
+    ],
+    "dev": true,
+    "dev-package-names": []
+}

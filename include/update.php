@@ -56,6 +56,14 @@ function xoops_module_update_wggithub($module, $prev_version = null)
 {
     require \dirname(__DIR__) . '/preloads/autoloader.php';
 
+    if (!wggithub_check_repository_nodeids($module)) {
+        return false;
+    }
+    if (!wggithub_normalize_repository_nodeids($GLOBALS['xoopsDB'])) {
+        $module->setErrors('Blank repository node IDs could not be converted to NULL; the schema update was stopped.');
+        return false;
+    }
+
     $moduleDirName = $module->dirname();
 
     //wggithub_check_db($module);
@@ -93,7 +101,10 @@ function xoops_module_update_wggithub($module, $prev_version = null)
     \copy($fileYaml, $fileYaml2);
 
     // run standard procedure for db migration
-    $migrate->synchronizeSchema();
+    if (!$migrate->synchronizeSchema()) {
+        $module->setErrors('Repository schema update failed; the node ID unique key could not be installed.');
+        return false;
+    }
 
     $errors = $module->getErrors();
     if (!empty($errors)) {
@@ -102,6 +113,47 @@ function xoops_module_update_wggithub($module, $prev_version = null)
 
     return true;
 
+}
+
+/**
+ * Refuse an upgrade that would require deleting or merging existing repositories.
+ */
+function wggithub_check_repository_nodeids($module): bool
+{
+    $db = $GLOBALS['xoopsDB'];
+    $table = $db->prefix('wggithub_repositories');
+    $sql = "SELECT MIN(repo_id) AS repo_id FROM `$table`"
+        . ' WHERE OCTET_LENGTH(repo_nodeid) > 0 GROUP BY CAST(repo_nodeid AS BINARY) HAVING COUNT(*) > 1 OR MAX(OCTET_LENGTH(repo_nodeid)) > 255 LIMIT 1';
+    $result = $db->query($sql);
+    if (!$db->isResultSet($result) || !($result instanceof \mysqli_result)) {
+        $module->setErrors('Cannot check repository node IDs; the schema update was stopped.');
+        return false;
+    }
+    if (false !== $db->fetchArray($result)) {
+        $module->setErrors('Duplicate or oversized GitHub node IDs exist. Resolve them while preserving related data, then update the module again. No repositories were changed.');
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Blank node IDs mean "none"; store them as NULL so the unique key accepts many of them.
+ * The ALTER runs in strict mode, so an oversized ID written after the preflight fails the
+ * conversion instead of being truncated; the session's SQL mode is restored afterwards.
+ */
+function wggithub_normalize_repository_nodeids($db): bool
+{
+    $table = $db->prefix('wggithub_repositories');
+    $run = static fn(string $sql): bool => (bool) (\method_exists($db, 'exec') ? $db->exec($sql) : $db->queryF($sql));
+    if (!$run('SET @wggithub_sql_mode = @@SESSION.sql_mode')
+        || !$run("SET SESSION sql_mode = CONCAT_WS(',', NULLIF(@@SESSION.sql_mode, ''), 'STRICT_ALL_TABLES')")) {
+        return false;
+    }
+    $altered = $run("ALTER TABLE `$table` MODIFY repo_nodeid VARBINARY(255) NULL DEFAULT NULL");
+    $restored = $run('SET SESSION sql_mode = @wggithub_sql_mode');
+
+    return $altered && $restored && $run("UPDATE `$table` SET repo_nodeid = NULL WHERE repo_nodeid = ''");
 }
 
 /**

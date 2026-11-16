@@ -22,6 +22,7 @@ namespace XoopsModules\Wggithub\Github;
 
 use Milo\Github\{
     Api,
+    Http,
     OAuth
 };
 use XoopsModules\Wggithub\{
@@ -57,12 +58,17 @@ class GithubClient extends Api
     /**
      * Constructor
      *
-     * @param null
+     * @param Http\IClient|null $client
      */
-    public function __construct()
+    public function __construct(?Http\IClient $client = null)
     {
+        parent::__construct($client ?? $this->createHttpClient());
         $this->helper = \XoopsModules\Wggithub\Helper::getInstance();
         $this->getSetting();
+        // An empty token would still send "Authorization: token " and GitHub answers 401; go anonymous instead.
+        if ('' !== \trim((string)$this->tokenAuth)) {
+            $this->setToken(new OAuth\Token($this->tokenAuth, 'bearer', ['repo', 'user', 'public_repo']));
+        }
     }
 
     /**
@@ -97,7 +103,7 @@ class GithubClient extends Api
     }
 
     public function testApi2($url) {
-        $api = new Api;
+        $api = new Api($this->createHttpClient());
 
         $token = new OAuth\Token('{myKey}', 'bearer', ['repo', 'user', 'public_repo']);
         $api->setToken($token);
@@ -245,17 +251,14 @@ class GithubClient extends Api
      * @param bool $skipError
      * @return array|bool
      */
-    public function get($url, $skipError = false)
+    public function _get($url, $skipError = false)
     {
         $error = false;
         $errMsg = '';
 
         $logsHandler = $this->helper->getHandler('Logs');
         $logsHandler->updateTableLogs(Constants::LOG_TYPE_REQUEST, $url, 'START');
-        $api = new Api;
-        $token = new OAuth\Token($this->tokenAuth, 'bearer', ['repo', 'user', 'public_repo']);
-        $api->setToken($token);
-        $response = $api->get($url);
+        $response = $this->get($url);
         $code = $response->getCode();
         if (\in_array($code, [200, 201], true)) {
             $logsHandler->updateTableLogs(Constants::LOG_TYPE_REQUEST, $url, 'OK');
@@ -293,10 +296,32 @@ class GithubClient extends Api
             \redirect_header('index.php?op=api_error&amp;message='. $message . '&amp;url='. $url, 5, $message);
             //throw new \RuntimeException('"' . $message . '"');
         } else {
-            $data = (array)$api->decode($response);
+            // Milo decodes to stdClass; the handlers index nested items as arrays, so decode associatively.
+            $data = (array)\json_decode($response->getContent(), true, 512, \JSON_BIGINT_AS_STRING | \JSON_THROW_ON_ERROR);
         }
 
         return $data;
+    }
+
+    /**
+     * Use PHP's CA configuration, with a shipped Mozilla bundle as the fallback.
+     */
+    private function createHttpClient(): Http\IClient
+    {
+        $fallbackCaFile = __DIR__ . '/ca-chain.crt';
+        if (\extension_loaded('curl')) {
+            $caFile = \ini_get('curl.cainfo') ?: \ini_get('openssl.cafile') ?: $fallbackCaFile;
+            return new HttpClient(new Http\CurlClient([\CURLOPT_CAINFO => $caFile, \CURLOPT_TIMEOUT => 30]));
+        }
+
+        $caFile = \ini_get('openssl.cafile') ?: $fallbackCaFile;
+        $client = new Http\StreamClient(['cafile' => $caFile]);
+        // An empty Expect header suppresses cURL's default, but is invalid on the wire.
+        $client->onRequest(static function (Http\Request $request): void {
+            $request->setHeader('Expect', null);
+        });
+
+        return new HttpClient($client);
     }
 
     /**

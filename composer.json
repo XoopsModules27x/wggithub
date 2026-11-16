@@ -1,0 +1,41 @@
+{
+    "name": "xoops/wggithub",
+    "type": "xoops-module",
+    "description": "GitHub integration for XOOPS 2.7+",
+    "keywords": ["xoops", "xoops-module", "github", "integration"],
+    "homepage": "https://github.com/XoopsModules27x/wggithub",
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "Gottfried Gabor",
+            "email": "gottfried.gabor@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/XoopsModules27x/wggithub/issues",
+        "source": "https://github.com/XoopsModules27x/wggithub"
+    },
+    "require": {
+        "php": ">=8.2",
+        "milo/github-api": "^2.0"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": [
+            "@php tests/github-client-compatibility.php",
+            "@php tests/github-client-redirects.php",
+            "@php -d curl.cainfo= -d openssl.cafile= tests/github-client-options.php",
+            "@php -d curl.cainfo=vendor/milo/github-api/src/ca-chain.crt -d openssl.cafile= tests/github-client-options.php curl-configured",
+            "@php -d curl.cainfo= -d openssl.cafile=vendor/milo/github-api/src/ca-chain.crt tests/github-client-options.php configured"
+        ],
+        "test:transport": "@php tests/github-client-transport.php",
+        "test:database": "@php tests/repository-import.php",
+        "qa": [
+            "@composer validate --strict",
+            "@test"
+        ]
+    }
+}
