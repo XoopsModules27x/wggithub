@@ -139,21 +139,21 @@ function wggithub_check_repository_nodeids($module): bool
 
 /**
  * Blank node IDs mean "none"; store them as NULL so the unique key accepts many of them.
- * Runs after the preflight, which already rejected IDs that the byte-sized column would truncate.
+ * The ALTER runs in strict mode, so an oversized ID written after the preflight fails the
+ * conversion instead of being truncated; the session's SQL mode is restored afterwards.
  */
 function wggithub_normalize_repository_nodeids($db): bool
 {
     $table = $db->prefix('wggithub_repositories');
-    foreach ([
-        "ALTER TABLE `$table` MODIFY repo_nodeid VARBINARY(255) NULL DEFAULT NULL",
-        "UPDATE `$table` SET repo_nodeid = NULL WHERE repo_nodeid = ''",
-    ] as $sql) {
-        if (!(\method_exists($db, 'exec') ? $db->exec($sql) : $db->queryF($sql))) {
-            return false;
-        }
+    $run = static fn(string $sql): bool => (bool) (\method_exists($db, 'exec') ? $db->exec($sql) : $db->queryF($sql));
+    if (!$run('SET @wggithub_sql_mode = @@SESSION.sql_mode')
+        || !$run("SET SESSION sql_mode = CONCAT_WS(',', NULLIF(@@SESSION.sql_mode, ''), 'STRICT_ALL_TABLES')")) {
+        return false;
     }
+    $altered = $run("ALTER TABLE `$table` MODIFY repo_nodeid VARBINARY(255) NULL DEFAULT NULL");
+    $restored = $run('SET SESSION sql_mode = @wggithub_sql_mode');
 
-    return true;
+    return $altered && $restored && $run("UPDATE `$table` SET repo_nodeid = NULL WHERE repo_nodeid = ''");
 }
 
 /**

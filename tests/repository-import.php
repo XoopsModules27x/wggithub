@@ -176,6 +176,14 @@ try {
     $oversizedId = $db->quote(str_repeat('é', 200));
     $connection->query("INSERT INTO test_wggithub_repositories (repo_nodeid) VALUES ($oversizedId)");
     wggithubCheck(!wggithub_check_repository_nodeids($module), 'Upgrade must reject legacy IDs that would be truncated by byte limits.');
+    // An oversized ID written after the preflight must stop the conversion, even in a non-strict session.
+    $connection->query("SET SESSION sql_mode = ''");
+    mysqli_report(MYSQLI_REPORT_OFF);
+    wggithubCheck(!wggithub_normalize_repository_nodeids($db), 'Conversion must fail rather than truncate oversized IDs.');
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $result = $connection->query("SELECT @@SESSION.sql_mode AS mode, (SELECT MAX(OCTET_LENGTH(repo_nodeid)) FROM test_wggithub_repositories) AS bytes");
+    $row = $result->fetch_assoc();
+    wggithubCheck('' === $row['mode'] && 400 === (int) $row['bytes'], 'Failed conversion must keep the ID intact and restore the session SQL mode.');
     $connection->query('DELETE FROM test_wggithub_repositories WHERE repo_id <> ' . $repoId);
     $connection->query("ALTER TABLE test_wggithub_repositories MODIFY repo_nodeid VARCHAR(255) NOT NULL DEFAULT ''");
     $connection->query("INSERT INTO test_wggithub_repositories (repo_name) VALUES ('legacy-a'), ('legacy-b')");
