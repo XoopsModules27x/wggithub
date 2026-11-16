@@ -36,7 +36,7 @@
             <p class="center"><img class="tabcontent-logo" src="assets/images/logoModule.png" alt="<{$smarty.const._MA_WGGITHUB_TITLE}>" title="<{$smarty.const._MA_WGGITHUB_TITLE}>"></p>
             <h3><{$smarty.const._MA_WGGITHUB_DESC}></h3>
             <p><{$smarty.const._MA_WGGITHUB_INDEX_DESC}></p>
-            <p class="tabcontent-lastupdate"><{$smarty.const._MA_WGGITHUB_INDEX_LASTUPDATE}>: <{$lastUpdate}> GMT</p>
+            <p class="tabcontent-lastupdate"><{$smarty.const._MA_WGGITHUB_INDEX_LASTUPDATE}>: <{$lastUpdate|default:'-'}> GMT</p>
             <{if $apiexceed|default:''}>
                 <p><{$smarty.const._MA_WGGITHUB_READGH_ERROR_APILIMIT}></p>
             <{elseif $apierror|default:''}>

@@ -42,6 +42,54 @@ class RepositoriesHandler extends \XoopsPersistableObjectHandler
     }
 
     /**
+     * Store a blank node ID as NULL so manual entries without one do not collide on the unique key.
+     *
+     * @param \XoopsObject $object
+     * @param bool         $force
+     *
+     * @return mixed
+     */
+    public function insert(\XoopsObject $object, $force = true)
+    {
+        $nodeId = $object->vars['repo_nodeid'];
+        $clearNodeId = $nodeId['changed'] && '' === (string) $nodeId['value'];
+        if ($clearNodeId) {
+            // XoopsObject always quotes text values, so NULL is written separately.
+            $object->vars['repo_nodeid']['changed'] = false;
+        }
+        $id = false;
+        $saved = false;
+        // A new row gets NULL from the column default; only existing rows need the separate write.
+        $writeNull = $clearNodeId && !$object->isNew();
+        try {
+            $id = parent::insert($object, $force);
+            if ($id && $writeNull) {
+                $sql = "UPDATE `{$this->table}` SET repo_nodeid = NULL WHERE repo_id = " . (int) $id;
+                // Same write path as the parent: exec() on 2.7+, $force-selected query()/queryF() on 2.5,
+                // so the 2.5 proxy's read-only guard for GET requests still applies.
+                $written = \method_exists($this->db, 'exec')
+                    ? $this->db->exec($sql)
+                    : ($force ? $this->db->queryF($sql) : $this->db->query($sql));
+                if (!$written) {
+                    $id = false;
+                }
+            }
+            $saved = (bool) $id;
+        } finally {
+            if (!$saved) {
+                // cleanVars() unsets the dirty flag before the SQL runs; restore it and the pending
+                // NULL so a retry of the same object writes every edit.
+                $object->setDirty();
+                if ($clearNodeId) {
+                    $object->vars['repo_nodeid']['changed'] = true;
+                }
+            }
+        }
+
+        return $id;
+    }
+
+    /**
      * @param bool $isNew
      *
      * @return object
@@ -185,8 +233,25 @@ class RepositoriesHandler extends \XoopsPersistableObjectHandler
                     $repositoriesObj->setVar('repo_datecreated', \time());
                     $repositoriesObj->setVar('repo_submitter', $submitter);
                     // Insert Data
-                    if ($repositoriesHandler->insert($repositoriesObj)) {
-                        $newRepoId = $repositoriesObj->getNewInsertedIdRepositories();
+                    try {
+                        $inserted = $repositoriesHandler->insert($repositoriesObj);
+                        $insertError = $inserted ? 0 : $this->db->errno();
+                    } catch (\mysqli_sql_exception $exception) {
+                        if (1062 !== $exception->getCode()) {
+                            throw $exception;
+                        }
+                        $inserted = false;
+                        $insertError = 1062;
+                    }
+                    if (!$inserted && 0 === $repoId && 1062 === $insertError
+                        && $repositoriesHandler->getCount($crRepositories) > 0
+                    ) {
+                        // The winning importer owns this node and its related updates.
+                        ++$reposNb;
+                        continue;
+                    }
+                    if ($inserted) {
+                        $newRepoId = $repositoriesObj->getVar('repo_id');
                         if (0 == $repoId) {
                             $repoId = $newRepoId;
                         }

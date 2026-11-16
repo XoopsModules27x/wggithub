@@ -97,13 +97,13 @@ switch ($op) {
     case 'list':
     case 'apiexceed':
     default:
+        $lastUpdate = 0;
         //check number of directories with auto_update
         $crDirectories = new \CriteriaCompo();
         $crDirectories->add(new \Criteria('dir_autoupdate', 1));
         $directoriesCount = $directoriesHandler->getCount($crDirectories);
         if ($directoriesCount > 0) {
             //check number of API calls
-            $lastUpdate = 0;
             $crLogs = new \CriteriaCompo();
             $crLogs->add(new \Criteria('log_datecreated', (\time() - 3600), '>'));
             $logsCount = $logsHandler->getCount($crLogs);
