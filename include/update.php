@@ -59,6 +59,10 @@ function xoops_module_update_wggithub($module, $prev_version = null)
     if (!wggithub_check_repository_nodeids($module)) {
         return false;
     }
+    if (!wggithub_normalize_repository_nodeids($GLOBALS['xoopsDB'])) {
+        $module->setErrors('Blank repository node IDs could not be converted to NULL; the schema update was stopped.');
+        return false;
+    }
 
     $moduleDirName = $module->dirname();
 
@@ -119,7 +123,7 @@ function wggithub_check_repository_nodeids($module): bool
     $db = $GLOBALS['xoopsDB'];
     $table = $db->prefix('wggithub_repositories');
     $sql = "SELECT MIN(repo_id) AS repo_id FROM `$table`"
-        . ' GROUP BY CAST(repo_nodeid AS BINARY) HAVING COUNT(*) > 1 OR MAX(OCTET_LENGTH(repo_nodeid)) > 255 LIMIT 1';
+        . ' WHERE OCTET_LENGTH(repo_nodeid) > 0 GROUP BY CAST(repo_nodeid AS BINARY) HAVING COUNT(*) > 1 OR MAX(OCTET_LENGTH(repo_nodeid)) > 255 LIMIT 1';
     $result = $db->query($sql);
     if (!$db->isResultSet($result) || !($result instanceof \mysqli_result)) {
         $module->setErrors('Cannot check repository node IDs; the schema update was stopped.');
@@ -128,6 +132,25 @@ function wggithub_check_repository_nodeids($module): bool
     if (false !== $db->fetchArray($result)) {
         $module->setErrors('Duplicate or oversized GitHub node IDs exist. Resolve them while preserving related data, then update the module again. No repositories were changed.');
         return false;
+    }
+
+    return true;
+}
+
+/**
+ * Blank node IDs mean "none"; store them as NULL so the unique key accepts many of them.
+ * Runs after the preflight, which already rejected IDs that the byte-sized column would truncate.
+ */
+function wggithub_normalize_repository_nodeids($db): bool
+{
+    $table = $db->prefix('wggithub_repositories');
+    foreach ([
+        "ALTER TABLE `$table` MODIFY repo_nodeid VARBINARY(255) NULL DEFAULT NULL",
+        "UPDATE `$table` SET repo_nodeid = NULL WHERE repo_nodeid = ''",
+    ] as $sql) {
+        if (!(\method_exists($db, 'exec') ? $db->exec($sql) : $db->queryF($sql))) {
+            return false;
+        }
     }
 
     return true;

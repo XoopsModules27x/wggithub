@@ -61,7 +61,7 @@ CREATE TABLE `wggithub_logs` (
 
 CREATE TABLE `wggithub_repositories` (
   `repo_id`          INT(8) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `repo_nodeid`      VARBINARY(255) NOT NULL DEFAULT '',
+  `repo_nodeid`      VARBINARY(255)  NULL DEFAULT NULL,
   `repo_user`        VARCHAR(255)    NOT NULL DEFAULT '',
   `repo_name`        VARCHAR(255)    NOT NULL DEFAULT '',
   `repo_fullname`    VARCHAR(255)    NOT NULL DEFAULT '',

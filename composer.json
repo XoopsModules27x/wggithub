@@ -28,7 +28,7 @@
             "@php tests/github-client-compatibility.php",
             "@php tests/github-client-redirects.php",
             "@php -d curl.cainfo= -d openssl.cafile= tests/github-client-options.php",
-            "@php -d curl.cainfo=vendor/milo/github-api/src/ca-chain.crt -d openssl.cafile= tests/github-client-options.php configured",
+            "@php -d curl.cainfo=vendor/milo/github-api/src/ca-chain.crt -d openssl.cafile= tests/github-client-options.php curl-configured",
             "@php -d curl.cainfo= -d openssl.cafile=vendor/milo/github-api/src/ca-chain.crt tests/github-client-options.php configured"
         ],
         "test:transport": "@php tests/github-client-transport.php",

@@ -11,7 +11,9 @@ $reflection = new ReflectionClass(GithubClient::class);
 $client = $reflection->newInstanceWithoutConstructor();
 $transport = $reflection->getMethod('createHttpClient')->invoke($client);
 $transport = (new ReflectionProperty(XoopsModules\Wggithub\Github\HttpClient::class, 'client'))->getValue($transport);
-$caFile = ($argv[1] ?? '') === 'configured'
+// curl-configured: only curl.cainfo is set, which the stream fallback ignores by design.
+$mode = $argv[1] ?? '';
+$caFile = $mode === 'configured' || ($mode === 'curl-configured' && $transport instanceof Http\CurlClient)
     ? 'vendor/milo/github-api/src/ca-chain.crt'
     : dirname(__DIR__) . '/class/Github/ca-chain.crt';
 if ($transport instanceof Http\CurlClient) {

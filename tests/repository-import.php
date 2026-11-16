@@ -21,6 +21,7 @@ require_once XOOPS_ROOT_PATH . '/kernel/object.php';
 require_once XOOPS_ROOT_PATH . '/class/criteria.php';
 require_once XOOPS_ROOT_PATH . '/class/model/xoopsmodel.php';
 require_once XOOPS_ROOT_PATH . '/class/database/mysqldatabase.php';
+require_once XOOPS_ROOT_PATH . '/class/logger/xoopslogger.php';
 require_once XOOPS_ROOT_PATH . '/class/module.textsanitizer.php';
 require_once dirname(__DIR__) . '/include/update.php';
 function xoops_load(string $name): bool
@@ -57,6 +58,9 @@ try {
     $db = new XoopsMySQLDatabaseProxy();
     $db->conn = $connection;
     $db->setPrefix('test');
+    // XOOPS 2.5.11 queryF() calls the logger unguarded.
+    $logger = XoopsLogger::getInstance();
+    $db->setLogger($logger);
     $GLOBALS['xoopsDB'] = $db;
     preg_match_all('/CREATE TABLE `([^`]+)`\s*\(.*?\) ENGINE=InnoDB;/s', file_get_contents(dirname(__DIR__) . '/sql/mysql.sql'), $tables, PREG_SET_ORDER);
     foreach ($tables as $table) {
@@ -116,6 +120,41 @@ try {
         public array $errors = [];
         public function setErrors(string $message): void { $this->errors[] = $message; }
     };
+    foreach (['manual-a', 'manual-b'] as $name) {
+        $manual = $handler->create();
+        $manual->setVar('repo_nodeid', '');
+        $manual->setVar('repo_name', $name);
+        wggithubCheck((bool) $handler->insert($manual), 'Repositories without a node ID must save.');
+    }
+    $result = $connection->query('SELECT COUNT(*) AS total FROM test_wggithub_repositories WHERE repo_nodeid IS NULL');
+    wggithubCheck((int) $result->fetch_assoc()['total'] === 2, 'Blank node IDs must be stored as NULL.');
+    $manual = $handler->get($manual->getVar('repo_id'));
+    $manual->setVar('repo_nodeid', 'MANUAL_NODE');
+    $handler->insert($manual);
+    $manual = $handler->get($manual->getVar('repo_id'));
+    wggithubCheck('MANUAL_NODE' === $manual->getVar('repo_nodeid'), 'A node ID must be settable on a manual entry.');
+    $manual->setVar('repo_nodeid', '');
+    $manual->setVar('repo_name', 'manual-b2');
+    $handler->insert($manual);
+    $result = $connection->query("SELECT repo_nodeid, repo_name FROM test_wggithub_repositories WHERE repo_id = {$manual->getVar('repo_id')}");
+    $row = $result->fetch_assoc();
+    wggithubCheck(null === $row['repo_nodeid'] && 'manual-b2' === $row['repo_name'], 'Clearing a node ID must store NULL and keep other edits.');
+    $manual->setVar('repo_nodeid', 'RETRY_NODE');
+    $handler->insert($manual);
+    $manual = $handler->get($manual->getVar('repo_id'));
+    $manual->setVar('repo_nodeid', '');
+    $manual->setVar('repo_name', 'manual-retried');
+    mysqli_report(MYSQLI_REPORT_OFF);
+    $connection->query('RENAME TABLE test_wggithub_repositories TO test_wggithub_repositories_off');
+    wggithubCheck(!$handler->insert($manual), 'A failed save must report failure.');
+    $connection->query('RENAME TABLE test_wggithub_repositories_off TO test_wggithub_repositories');
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    wggithubCheck((bool) $handler->insert($manual), 'Retrying a failed save must succeed.');
+    $result = $connection->query("SELECT repo_nodeid, repo_name FROM test_wggithub_repositories WHERE repo_id = {$manual->getVar('repo_id')}");
+    $row = $result->fetch_assoc();
+    wggithubCheck(null === $row['repo_nodeid'] && 'manual-retried' === $row['repo_name'], 'A retry must write every pending edit, including the NULL node ID.');
+    wggithubCheck(wggithub_check_repository_nodeids($module), 'NULL node IDs must pass the upgrade preflight.');
+    $connection->query("DELETE FROM test_wggithub_repositories WHERE repo_name LIKE 'manual-%'");
     wggithubCheck(wggithub_check_repository_nodeids($module), 'Clean data must pass the upgrade preflight.');
     $connection->begin_transaction();
     $connection->query("INSERT INTO test_wggithub_repositories (repo_nodeid) VALUES ('CaseNode'), ('casenode')");
@@ -137,6 +176,14 @@ try {
     $oversizedId = $db->quote(str_repeat('é', 200));
     $connection->query("INSERT INTO test_wggithub_repositories (repo_nodeid) VALUES ($oversizedId)");
     wggithubCheck(!wggithub_check_repository_nodeids($module), 'Upgrade must reject legacy IDs that would be truncated by byte limits.');
+    $connection->query('DELETE FROM test_wggithub_repositories WHERE repo_id <> ' . $repoId);
+    $connection->query("ALTER TABLE test_wggithub_repositories MODIFY repo_nodeid VARCHAR(255) NOT NULL DEFAULT ''");
+    $connection->query("INSERT INTO test_wggithub_repositories (repo_name) VALUES ('legacy-a'), ('legacy-b')");
+    wggithubCheck(wggithub_check_repository_nodeids($module), 'Blank legacy node IDs are not duplicates.');
+    wggithubCheck(wggithub_normalize_repository_nodeids($db), 'Upgrade must convert blank node IDs to NULL.');
+    $connection->query('ALTER TABLE test_wggithub_repositories ADD UNIQUE KEY repo_nodeid (repo_nodeid)');
+    $result = $connection->query('SELECT COUNT(*) AS total FROM test_wggithub_repositories WHERE repo_nodeid IS NULL');
+    wggithubCheck((int) $result->fetch_assoc()['total'] === 2, 'Normalized blank node IDs must coexist under the unique key.');
     echo "PASS: duplicate imports preserve canonical IDs, approval and readmes; upgrade refuses destructive deduplication.\n";
 } finally {
     // The only schema dropped is the random schema this process just created.
