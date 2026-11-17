@@ -209,7 +209,9 @@ class Readmes extends \XoopsObject
             'src="en/assets/',
             "src='en/assets/",
             'src="assets/',
-            "src='assets/"
+            "src='assets/",
+            'src="./assets/',
+            "src='./assets/"
         ];
         $arrReplace = [
             'src="https://xoops.org/images/logoXoopsPhp8.png',
@@ -218,6 +220,8 @@ class Readmes extends \XoopsObject
             "src='" . $baseUrl . '.gitbook/assets/',
             'src="' . $baseUrl . 'en/assets/',
             "src='" . $baseUrl . 'en/assets/',
+            'src="' . $baseUrl . 'assets/',
+            "src='" . $baseUrl . 'assets/',
             'src="' . $baseUrl . 'assets/',
             "src='" . $baseUrl . 'assets/'
         ];
