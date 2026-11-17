@@ -308,8 +308,7 @@ switch ($op) {
 }
 
 $GLOBALS['xoopsTpl']->assign('table_type', $helper->getConfig('table_type'));
-// Breadcrumbs
-$xoBreadcrumbs[] = ['title' => \_MA_WGGITHUB_INDEX];
+
 // Keywords
 wggithubMetaKeywords($helper->getConfig('keywords') . ', ' . \implode(',', $keywords));
 unset($keywords);
