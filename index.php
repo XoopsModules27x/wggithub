@@ -75,7 +75,7 @@ switch ($op) {
             $GLOBALS['xoopsTpl']->assign('showSingle', true);
             $repositoriesObj = $repositoriesHandler->get($repoId);
             $repo = $repositoriesObj->getValuesRepositories();
-            $repo['readme_val'] = ['content_clean' => \_MA_WGGITHUB_README_NOFILE];
+            $repo['readme_val'] = ['content_clean' => \_MD_WGGITHUB_README_NOFILE];
             if ($repositoriesObj->getVar('repo_readme') > 0) {
                 $crReadmes = new \CriteriaCompo();
                 $crReadmes->add(new \Criteria('rm_repoid', $repoId));
@@ -230,7 +230,7 @@ switch ($op) {
                     foreach (\array_keys($repositoriesAll) as $j) {
                         $repoId = $repositoriesAll[$j]->getVar('repo_id');
                         $repos[$j] = $repositoriesAll[$j]->getValuesRepositories();
-                        $repos[$j]['readme'] = ['content_clean' => \_MA_WGGITHUB_README_NOFILE];
+                        $repos[$j]['readme'] = ['content_clean' => \_MD_WGGITHUB_README_NOFILE];
                         if ($repositoriesAll[$j]->getVar('repo_readme') > 0) {
                             $crReadmes = new \CriteriaCompo();
                             $crReadmes->add(new \Criteria('rm_repoid', $repoId));
@@ -255,9 +255,9 @@ switch ($op) {
                 }
                 unset($crRepo1, $crRepo2, $crRepo3, $crRepo4, $crRepositories);
                 if ($repositoriesCount === $repositoriesCountTotal) {
-                    $directories[$i]['countRepos'] = \str_replace(['%s', '%t'], [$dirName, $repositoriesCountTotal], \_MA_WGGITHUB_REPOSITORIES_COUNT2);
+                    $directories[$i]['countRepos'] = \str_replace(['%s', '%t'], [$dirName, $repositoriesCountTotal], \_MD_WGGITHUB_REPOSITORIES_COUNT2);
                 } else {
-                    $directories[$i]['countRepos'] = \str_replace(['%s', '%r', '%t'], [$dirName, $repositoriesCount, $repositoriesCountTotal], \_MA_WGGITHUB_REPOSITORIES_COUNT1);
+                    $directories[$i]['countRepos'] = \str_replace(['%s', '%r', '%t'], [$dirName, $repositoriesCount, $repositoriesCountTotal], \_MD_WGGITHUB_REPOSITORIES_COUNT1);
                 }
                 $directories[$i]['repos'] = $repos;
                 $directories[$i]['previousRepos'] = $dirStart[$i] > 0;
@@ -270,7 +270,7 @@ switch ($op) {
 
             unset($crDirectories, $directories);
 
-            $GLOBALS['xoopsTpl']->assign('lang_thereare', \sprintf(\_MA_WGGITHUB_INDEX_THEREARE, $directoriesCount));
+            $GLOBALS['xoopsTpl']->assign('lang_thereare', \sprintf(\_MD_WGGITHUB_INDEX_THEREARE, $directoriesCount));
             $GLOBALS['xoopsTpl']->assign('showBtnAll', (Constants::FILTER_TYPE_ALL == $helper->getConfig('filter_type')));
         }
 
@@ -292,9 +292,9 @@ switch ($op) {
         $githubClient = GithubClient::getInstance();
         $result = $githubClient->executeUpdate($dirName);
         if ($result) {
-            \redirect_header($redir, 2, \_MA_WGGITHUB_READGH_SUCCESS);
+            \redirect_header($redir, 2, \_MD_WGGITHUB_READGH_SUCCESS);
         } else {
-            \redirect_header($redir, 2, \_MA_WGGITHUB_READGH_ERROR_API);
+            \redirect_header($redir, 2, \_MD_WGGITHUB_READGH_ERROR_API);
         }
 
         break;
@@ -310,9 +310,9 @@ switch ($op) {
         $redir    = 'index.php?op=list_afterupdate&amp;frelease=' . $filterRelease . '&amp;fsortby=' . $filterSortby;
         $result = $helper->getHandler('Readmes')->updateReadmes($repoId, $repoUser, $repoName);
         if ($result) {
-            \redirect_header($redir, 2, \_MA_WGGITHUB_READGH_SUCCESS);
+            \redirect_header($redir, 2, \_MD_WGGITHUB_READGH_SUCCESS);
         } else {
-            \redirect_header($redir, 2, \_MA_WGGITHUB_READGH_ERROR_API);
+            \redirect_header($redir, 2, \_MD_WGGITHUB_READGH_ERROR_API);
         }
         break;
     case 'api_error':
@@ -325,7 +325,7 @@ switch ($op) {
 wggithubMetaKeywords($helper->getConfig('keywords') . ', ' . \implode(',', $keywords));
 unset($keywords);
 // Description
-wggithubMetaDescription(\_MA_WGGITHUB_INDEX_DESC);
+wggithubMetaDescription(\_MD_WGGITHUB_INDEX_DESC);
 $GLOBALS['xoopsTpl']->assign('xoops_mpageurl', \WGGITHUB_URL.'/index.php');
 $GLOBALS['xoopsTpl']->assign('xoops_icons32_url', XOOPS_ICONS32_URL);
 $GLOBALS['xoopsTpl']->assign('wggithub_upload_url', \WGGITHUB_UPLOAD_URL);

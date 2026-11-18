@@ -183,9 +183,9 @@ switch ($op) {
         $result = $githubClient->executeUpdate($dirName);
         $redir = 'directories.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit;
         if ($result) {
-            \redirect_header($redir, 2, \_MA_WGGITHUB_READGH_SUCCESS);
+            \redirect_header($redir, 2, \_MD_WGGITHUB_READGH_SUCCESS);
         } else {
-            \redirect_header($redir, 2, \_MA_WGGITHUB_READGH_ERROR_API);
+            \redirect_header($redir, 2, \_MD_WGGITHUB_READGH_ERROR_API);
         }
         break;
     case 'change_yn':

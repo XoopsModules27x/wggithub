@@ -18,6 +18,7 @@
         class/RequestsHandler.php adn admin/broken.php,
         templates/admin/wggithub_admin_broken.tpl,
         templates/admin/wggithub_admin_requests.tpl (goffy)
+ - updated lang defines (goffy)
 
 ===================================================================
 2023/04/13 Version 1.5.2 RC1

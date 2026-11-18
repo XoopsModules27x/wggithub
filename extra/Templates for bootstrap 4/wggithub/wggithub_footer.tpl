@@ -6,7 +6,7 @@
 <br>
 <{if $xoops_isadmin|default:'' != ''}>
     <hr />
-    <p class="text-center"><a class="btn btn-danger" href="<{$admin}>"><span class="fa fa-wrench fa-lg"></span> <{$smarty.const._MA_WGGITHUB_ADMIN}></a></p>
+    <p class="text-center"><a class="btn btn-danger" href="<{$admin}>"><span class="fa fa-wrench fa-lg"></span> <{$smarty.const._MD_WGGITHUB_ADMIN}></a></p>
 <{/if}>
 
 <{if $comment_mode|default:''}>

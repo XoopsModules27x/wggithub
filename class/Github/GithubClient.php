@@ -278,21 +278,21 @@ class GithubClient extends Api
             //catch common errors
             switch ($code) {
                 case 401:
-                    $message = \_MA_WGGITHUB_READGH_ERROR_API_401;
+                    $message = \_MD_WGGITHUB_READGH_ERROR_API_401;
                     break;
                 case 403:
                     /*if (\strpos($errMsg, 'API rate limit exceeded') > 0) {$GLOBALS['xoopsTpl']->assign('apiexceed', true);}*/
-                    $message = \_MA_WGGITHUB_READGH_ERROR_API_403;
+                    $message = \_MD_WGGITHUB_READGH_ERROR_API_403;
                     break;
                 case 404:
-                    $message = \_MA_WGGITHUB_READGH_ERROR_API_404;
+                    $message = \_MD_WGGITHUB_READGH_ERROR_API_404;
                     break;
                 case 405:
-                    $message = \_MA_WGGITHUB_READGH_ERROR_API_405;
+                    $message = \_MD_WGGITHUB_READGH_ERROR_API_405;
                     break;
                 case 0:
                 default:
-                    $message = \_MA_WGGITHUB_READGH_ERROR_API . '(' .$code . ' - ' .  $errMsg . ')';
+                    $message = \_MD_WGGITHUB_READGH_ERROR_API . '(' .$code . ' - ' .  $errMsg . ')';
                     break;
             }
             \redirect_header('index.php?op=api_error&message='. $message . '&url='. $url, 5, $message);
