@@ -147,8 +147,8 @@ function wggithub_check_repository_nodeids($module): bool
 function wggithub_normalize_repository_nodeids($db): bool
 {
     $table = $db->prefix('wggithub_repositories');
-    if (!$db->exec('SET @wggithub_sql_mode = @@SESSION.sql_mode')
-        || !$db->exec("SET SESSION sql_mode = CONCAT_WS(',', NULLIF(@@SESSION.sql_mode, ''), 'STRICT_ALL_TABLES')")) {
+    if (false != $db->exec('SET @wggithub_sql_mode = @@SESSION.sql_mode')
+        || false != $db->exec("SET SESSION sql_mode = CONCAT_WS(',', NULLIF(@@SESSION.sql_mode, ''), 'STRICT_ALL_TABLES')")) {
         return false;
     }
     $altered = $db->exec("ALTER TABLE `$table` MODIFY repo_nodeid VARBINARY(255) NULL DEFAULT NULL");

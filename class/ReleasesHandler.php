@@ -154,7 +154,7 @@ class ReleasesHandler extends \XoopsPersistableObjectHandler
                     $ghReleases = $githubClient->getReleases($repositoriesAll[$i]->getVar('repo_user'), $repositoriesAll[$i]->getVar('repo_name'));
                     if ($releasesCount > 0) {
                         $sql = 'DELETE FROM `' . $GLOBALS['xoopsDB']->prefix('wggithub_releases') . '` WHERE `rel_repoid` = ' . $repoId;
-                        if (!$result = $GLOBALS['xoopsDB']->exec($sql)) {
+                        if (!$GLOBALS['xoopsDB']->exec($sql)) {
                             return false;
                         }
                     }
@@ -219,7 +219,7 @@ class ReleasesHandler extends \XoopsPersistableObjectHandler
                 return true;
             }
             $sql = 'DELETE FROM `' . $GLOBALS['xoopsDB']->prefix('wggithub_releases') . '` WHERE `rel_repoid` = ' . $repoId;
-            if (!$result = $GLOBALS['xoopsDB']->exec($sql)) {
+            if (!$GLOBALS['xoopsDB']->exec($sql)) {
                 return false;
             }
 

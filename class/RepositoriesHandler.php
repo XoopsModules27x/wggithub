@@ -67,12 +67,7 @@ class RepositoriesHandler extends \XoopsPersistableObjectHandler
             $id = parent::insert($object, $force);
             if ($id && $writeNull) {
                 $sql = "UPDATE `{$this->table}` SET repo_nodeid = NULL WHERE repo_id = " . (int) $id;
-                // Same write path as the parent: exec() on 2.7+, $force-selected query()/queryF() on 2.5,
-                // so the 2.5 proxy's read-only guard for GET requests still applies.
-                $written = \method_exists($this->db, 'exec')
-                    ? $this->db->exec($sql)
-                    : ($force ? $this->db->exec($sql) : $this->db->query($sql));
-                if (!$written) {
+                if (!$this->db->exec($sql)) {
                     $id = false;
                 }
             }
