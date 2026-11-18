@@ -43,7 +43,13 @@ $permReadmeUpdate = $permissionsHandler->getPermReadmeUpdate();
 
 $op            = Request::getCmd('op', 'list');
 $filterRelease = Request::getString('frelease', 'any');
-$filterSortby  = Request::getString('fsortby', 'update');
+if (!\in_array($filterRelease, ['final', 'any', 'all'], true)) {
+    $filterRelease = 'any';
+}
+$filterSortby = Request::getString('fsortby', 'update');
+if (!\in_array($filterSortby, ['name', 'update'], true)) {
+    $filterSortby = 'update';
+}
 $repoId        = Request::getInt('repo_id', 0);
 
 $GLOBALS['xoopsTpl']->assign('frelease', $filterRelease);
@@ -51,7 +57,6 @@ $GLOBALS['xoopsTpl']->assign('fsortby', $filterSortby);
 
 // Define Stylesheet
 $GLOBALS['xoTheme']->addStylesheet($style, null);
-$GLOBALS['xoTheme']->addStylesheet(\WGGITHUB_URL . '/assets/css/tabs.css', null);
 $keywords = [];
 // 
 $GLOBALS['xoopsTpl']->assign('xoops_icons32_url', XOOPS_ICONS32_URL);
