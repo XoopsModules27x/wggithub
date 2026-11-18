@@ -191,6 +191,3 @@ include_once __DIR__ . '/main.php';
 \define('_AM_WGGITHUB_DONATION_AMOUNT', 'Donation Amount');
 \define('_AM_WGGITHUB_MAINTAINEDBY', ' is maintained by ');
 // ---------------- End ----------------
-// version 1.6.0
-\define('_AM_WGGITHUB_BROKEN_RESULT', 'Broken result in %s');
-\define('_AM_WGGITHUB_BROKEN_NODATA', 'No data available for %s');

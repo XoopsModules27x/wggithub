@@ -7,43 +7,43 @@
 <{if $directoriesCount|default:0 > 0}>
     <!-- filter area -->
     <div id="filter_bar" class="tab-filter">
-        <{$smarty.const._MA_WGGITHUB_FILTER_SORTBY}>:
+        <{$smarty.const._MD_WGGITHUB_FILTER_SORTBY}>:
         <div class="btn-group btn-group-sm" role="group" aria-label="Filter Sortby">
-            <a id="sortbyname" onclick="executeClick('index.php?op=list&fsortby=name&frelease=<{$frelease}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $fsortby =='name'}>disabled<{/if}>"><{$smarty.const._MA_WGGITHUB_FILTER_SORTBY_NAME}></a>
-            <a id="sortbyupdate" onclick="executeClick('index.php?op=list&fsortby=update&frelease=<{$frelease}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $fsortby =='update'}>disabled<{/if}>"><{$smarty.const._MA_WGGITHUB_FILTER_SORTBY_UPDATE}></a>
+            <a id="sortbyname" onclick="executeClick('index.php?op=list&fsortby=name&frelease=<{$frelease}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $fsortby =='name'}>disabled<{/if}>"><{$smarty.const._MD_WGGITHUB_FILTER_SORTBY_NAME}></a>
+            <a id="sortbyupdate" onclick="executeClick('index.php?op=list&fsortby=update&frelease=<{$frelease}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $fsortby =='update'}>disabled<{/if}>"><{$smarty.const._MD_WGGITHUB_FILTER_SORTBY_UPDATE}></a>
         </div>
-        <span id="filter_release_label"><{$smarty.const._MA_WGGITHUB_FILTER_RELEASE}>:</span>
+        <span id="filter_release_label"><{$smarty.const._MD_WGGITHUB_FILTER_RELEASE}>:</span>
         <div id="filter_release_bar" class="btn-group btn-group-sm" role="group" aria-label="Filter Releases">
-            <a id="relfinal" onclick="executeClick('index.php?op=list&frelease=final&fsortby=<{$fsortby}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $frelease =='final'}>disabled<{/if}>"><{$smarty.const._MA_WGGITHUB_FILTER_RELEASE_FINAL}></a>
-            <a id="relany" onclick="executeClick('index.php?op=list&frelease=any&fsortby=<{$fsortby}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $frelease =='any'}>disabled<{/if}>"><{$smarty.const._MA_WGGITHUB_FILTER_RELEASE_ANY}></a>
+            <a id="relfinal" onclick="executeClick('index.php?op=list&frelease=final&fsortby=<{$fsortby}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $frelease =='final'}>disabled<{/if}>"><{$smarty.const._MD_WGGITHUB_FILTER_RELEASE_FINAL}></a>
+            <a id="relany" onclick="executeClick('index.php?op=list&frelease=any&fsortby=<{$fsortby}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $frelease =='any'}>disabled<{/if}>"><{$smarty.const._MD_WGGITHUB_FILTER_RELEASE_ANY}></a>
             <{if $showBtnAll|default:false}>
-                <a id="relall" onclick="executeClick('index.php?op=list&frelease=all&fsortby=<{$fsortby}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $frelease =='all'}>disabled<{/if}>"><{$smarty.const._MA_WGGITHUB_FILTER_RELEASE_ALL}></a>
+                <a id="relall" onclick="executeClick('index.php?op=list&frelease=all&fsortby=<{$fsortby}>')" role="button" class="btn btn-primary btn-rounded <{if $menu == 0 || $frelease =='all'}>disabled<{/if}>"><{$smarty.const._MD_WGGITHUB_FILTER_RELEASE_ALL}></a>
             <{/if}>
         </div>
     </div>
     <!-- Basic Nav tabs -->
     <ul class="nav nav-tabs">
-        <li class="nav-item"><a class="nav-link <{if $menu == 0}>active<{/if}>" data-toggle="tab" onclick='javascript:toggleFilters(0);toggleFilterRelease(0);' href="#home"><{$smarty.const._MA_WGGITHUB_INDEX}></a></li>
+        <li class="nav-item"><a class="nav-link <{if $menu == 0}>active<{/if}>" data-toggle="tab" onclick='javascript:toggleFilters(0);toggleFilterRelease(0);' href="#home"><{$smarty.const._MD_WGGITHUB_INDEX}></a></li>
         <{foreach item=directory from=$directories}>
         <li class="nav-item"><a class="nav-link <{if $menu == $directory.id}>active<{/if}>" data-toggle="tab" onclick='javascript:toggleFilters(1);toggleFilterRelease(<{$directory.dir_filterrelease}>)'  href="#menu<{$directory.id}>"><{$directory.name}></a></li>
         <{/foreach}>
     </ul>
     <div class="tab-content tab-content-main">
         <div id="home" class="maintab tab-pane fade <{if $menu == 0}>active show<{/if}>">
-            <p class="center"><img class="tabcontent-logo" src="assets/images/logoModule.png" alt="<{$smarty.const._MA_WGGITHUB_TITLE}>" title="<{$smarty.const._MA_WGGITHUB_TITLE}>"></p>
+            <p class="center"><img class="tabcontent-logo" src="assets/images/logoModule.png" alt="<{$smarty.const._MD_WGGITHUB_TITLE}>" title="<{$smarty.const._MD_WGGITHUB_TITLE}>"></p>
             <div class="d-flex justify-content-center">
                 <div>
-                    <h4 class="text-center mb-3"><{$smarty.const._MA_WGGITHUB_DESC}></h4>
-                    <{$smarty.const._MA_WGGITHUB_INDEX_DESC}>
+                    <h4 class="text-center mb-3"><{$smarty.const._MD_WGGITHUB_DESC}></h4>
+                    <{$smarty.const._MD_WGGITHUB_INDEX_DESC}>
                 </div>
             </div>    
-            <p class="tabcontent-lastupdate"><{$smarty.const._MA_WGGITHUB_INDEX_LASTUPDATE}>: <{$lastUpdate|default:'-'}> GMT</p>
+            <p class="tabcontent-lastupdate"><{$smarty.const._MD_WGGITHUB_INDEX_LASTUPDATE}>: <{$lastUpdate|default:'-'}> GMT</p>
             <{if $apiexceed|default:''}>
-                <p><{$smarty.const._MA_WGGITHUB_READGH_ERROR_APILIMIT}></p>
+                <p><{$smarty.const._MD_WGGITHUB_READGH_ERROR_APILIMIT}></p>
             <{elseif $apierror|default:''}>
-                <p><{$smarty.const._MA_WGGITHUB_READGH_ERROR_APIOTHER}></p>
+                <p><{$smarty.const._MD_WGGITHUB_READGH_ERROR_APIOTHER}></p>
             <{else}>
-                <p><{$smarty.const._MA_WGGITHUB_INDEX_UPTODATE}></p>
+                <p><{$smarty.const._MD_WGGITHUB_INDEX_UPTODATE}></p>
             <{/if}>
         </div>
         <{foreach item=directory from=$directories}>
@@ -52,7 +52,7 @@
                 <div>
                     <h4 class="mt-2"><{$directory.countRepos}>
                             <{if $permGlobalRead && ($directory.dir_autoupdate == 0)}>
-                                <a id="btn_update" class="btn btn-primary btn-sm float-right" href="index.php?op=update_dir&amp;dir_name=<{$directory.name}>"><span class="fa fa-refresh fa-lg"></span> <{$smarty.const._MA_WGGITHUB_DIRECTORY_UPDATE}></a>
+                                <a id="btn_update" class="btn btn-primary btn-sm float-right" href="index.php?op=update_dir&amp;dir_name=<{$directory.name}>"><span class="fa fa-refresh fa-lg"></span> <{$smarty.const._MD_WGGITHUB_DIRECTORY_UPDATE}></a>
                             <{/if}>
                     </h4>
                     <p><{$directory.descr}></p>
@@ -79,14 +79,14 @@
                     <div class="tab-content">
                         <{foreach name=repo item=repo from=$directory.repos}>
                             <div class="tab-pane fade <{if $smarty.foreach.repo.first}>active show<{/if}>" id="tabdetail<{$repo.id}>" role="tabpanel">
-                                <h4><{$smarty.const._MA_WGGITHUB_REPOSITORY}>: <{$repo.name}></h4>
+                                <h4><{$smarty.const._MD_WGGITHUB_REPOSITORY}>: <{$repo.name}></h4>
                                 <p>
-                                    <span class="fa fa-calendar"></span> <{$repo.createdat}> (<{$smarty.const._MA_WGGITHUB_REPOSITORY_CREATEDAT}>)<br />
-                                    <span class="fa fa-calendar"></span> <{$repo.updatedat}> (<{$smarty.const._MA_WGGITHUB_REPOSITORY_UPDATEDAT}>)
+                                    <span class="fa fa-calendar"></span> <{$repo.createdat}> (<{$smarty.const._MD_WGGITHUB_REPOSITORY_CREATEDAT}>)<br />
+                                    <span class="fa fa-calendar"></span> <{$repo.updatedat}> (<{$smarty.const._MD_WGGITHUB_REPOSITORY_UPDATEDAT}>)
                                 </p>
 
                                 <{if $repo.releases|default:''}>
-                                    <p><b><{$smarty.const._MA_WGGITHUB_RELEASES}>:</b></p>
+                                    <p><b><{$smarty.const._MD_WGGITHUB_RELEASES}>:</b></p>
                                     <{foreach item=release from=$repo.releases}>
                                         <ul class="list-group">
                                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -97,8 +97,8 @@
                                                         <span class="fa fa-download fa-lg"></span>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownButton-ziptar">
-                                                        <a class="dropdown-item" href="<{$release.zipballurl}>" title="<{$smarty.const._MA_WGGITHUB_RELEASE_ZIP}>"><{$smarty.const._MA_WGGITHUB_RELEASE_ZIP}></a>
-                                                        <a class="dropdown-item" href="<{$release.tarballurl}>" title="<{$smarty.const._MA_WGGITHUB_RELEASE_TAR}>"><{$smarty.const._MA_WGGITHUB_RELEASE_TAR}></a>
+                                                        <a class="dropdown-item" href="<{$release.zipballurl}>" title="<{$smarty.const._MD_WGGITHUB_RELEASE_ZIP}>"><{$smarty.const._MD_WGGITHUB_RELEASE_ZIP}></a>
+                                                        <a class="dropdown-item" href="<{$release.tarballurl}>" title="<{$smarty.const._MD_WGGITHUB_RELEASE_TAR}>"><{$smarty.const._MD_WGGITHUB_RELEASE_TAR}></a>
                                                     </div>
                                                 </div>
                                             </li>
@@ -106,16 +106,16 @@
                                     <{/foreach}>
                                 <{/if}>
 
-                                <p class="pt-2 text-center"><a class="btn btn-primary" href="<{$repo.htmlurl}>" title="<{$smarty.const._MA_WGGITHUB_REPOSITORY_GOTO}>" target="_blank"><span class="fa fa-github fa-lg"></span> <{$smarty.const._MA_WGGITHUB_REPOSITORY_GOTO}></a></p>
+                                <p class="pt-2 text-center"><a class="btn btn-primary" href="<{$repo.htmlurl}>" title="<{$smarty.const._MD_WGGITHUB_REPOSITORY_GOTO}>" target="_blank"><span class="fa fa-github fa-lg"></span> <{$smarty.const._MD_WGGITHUB_REPOSITORY_GOTO}></a></p>
 
                                 <{if $repo.readme.gitbook_link|default:''}>
-                                    <p class="text-center"><a class='btn btn-warning' href="<{$repo.readme.gitbook_link}>" title="<{$smarty.const._MA_WGGITHUB_GITBOOK_GOTO}>" target="_blank"> <span class="fa fa-book fa-lg"></span> <{$smarty.const._MA_WGGITHUB_GITBOOK_GOTO}></a></p>
+                                    <p class="text-center"><a class='btn btn-warning' href="<{$repo.readme.gitbook_link}>" title="<{$smarty.const._MD_WGGITHUB_GITBOOK_GOTO}>" target="_blank"> <span class="fa fa-book fa-lg"></span> <{$smarty.const._MD_WGGITHUB_GITBOOK_GOTO}></a></p>
                                 <{/if}>
                                 
                                 <hr />
-                                    <p class="lead mt-2"><span class="fa fa-file-text-o"></span> <b><{$smarty.const._MA_WGGITHUB_REPOSITORY_README}></b>
+                                    <p class="lead mt-2"><span class="fa fa-file-text-o"></span> <b><{$smarty.const._MD_WGGITHUB_REPOSITORY_README}></b>
                                         <{if $permReadmeUpdate|default:''}>
-                                            <a class='btn btn-primary btn-sm float-right' href="index.php?op=update_readme&amp;repo_id=<{$repo.id}>&amp;repo_user=<{$repo.user}>&amp;repo_name=<{$repo.name}>" title="<{$smarty.const._MA_WGGITHUB_README_UPDATE}>"><span class="fa fa-refresh fa-lg"></span> <{$smarty.const._MA_WGGITHUB_README_UPDATE}></a>
+                                            <a class='btn btn-primary btn-sm float-right' href="index.php?op=update_readme&amp;repo_id=<{$repo.id}>&amp;repo_user=<{$repo.user}>&amp;repo_name=<{$repo.name}>" title="<{$smarty.const._MD_WGGITHUB_README_UPDATE}>"><span class="fa fa-refresh fa-lg"></span> <{$smarty.const._MD_WGGITHUB_README_UPDATE}></a>
                                         <{/if}>
                                         <div class="border rounded p-2"><{$repo.readme.content_clean|default:''}></div>
                                     </p>

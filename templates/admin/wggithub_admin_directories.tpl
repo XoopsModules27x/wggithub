@@ -55,7 +55,7 @@
                 <td class='center'><{$directory.datecreated}></td>
                 <td class='center'><{$directory.submitter}></td>
                 <td class="center  width5">
-                    <a href="directories.php?op=readgh&amp;dir_id=<{$directory.id}>&amp;start=<{$start}>&amp;limit=<{$limit}>" title="<{$smarty.const._MA_WGGITHUB_READGH_DIRECTORY}>"><img src="<{$wggithub_icons_url_16}>/github.png" alt="<{$smarty.const._MA_WGGITHUB_READGH_DIRECTORY}> directories" /></a>
+                    <a href="directories.php?op=readgh&amp;dir_id=<{$directory.id}>&amp;start=<{$start}>&amp;limit=<{$limit}>" title="<{$smarty.const._MD_WGGITHUB_READGH_DIRECTORY}>"><img src="<{$wggithub_icons_url_16}>/github.png" alt="<{$smarty.const._MD_WGGITHUB_READGH_DIRECTORY}> directories" /></a>
                     <a href="directories.php?op=edit&amp;dir_id=<{$directory.id}>&amp;start=<{$start}>&amp;limit=<{$limit}>" title="<{$smarty.const._EDIT}>"><img src="<{xoModuleIcons16 'edit.png'}>" alt="<{$smarty.const._EDIT}> directories" /></a>
                     <a href="directories.php?op=delete&amp;dir_id=<{$directory.id}>&amp;start=<{$start}>&amp;limit=<{$limit}>" title="<{$smarty.const._DELETE}>"><img src="<{xoModuleIcons16 'delete.png'}>" alt="<{$smarty.const._DELETE}> directories" /></a>
                 </td>
