@@ -20,6 +20,8 @@ namespace XoopsModules\Wggithub\Github;
  * @author       Goffy - XOOPS Development Team
  */
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 use Milo\Github\{
     Api,
     Http,
@@ -293,7 +295,7 @@ class GithubClient extends Api
                     $message = \_MA_WGGITHUB_READGH_ERROR_API . '(' .$code . ' - ' .  $errMsg . ')';
                     break;
             }
-            \redirect_header('index.php?op=api_error&amp;message='. $message . '&amp;url='. $url, 5, $message);
+            \redirect_header('index.php?op=api_error&message='. $message . '&url='. $url, 5, $message);
             //throw new \RuntimeException('"' . $message . '"');
         } else {
             // Milo decodes to stdClass; the handlers index nested items as arrays, so decode associatively.

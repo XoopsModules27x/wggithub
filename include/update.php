@@ -23,6 +23,8 @@
  * @license        GPL 2.0 or later
  */
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 use XoopsModules\Wggithub\{
     Common\Configurator,
     Common\Migrate,
@@ -145,15 +147,14 @@ function wggithub_check_repository_nodeids($module): bool
 function wggithub_normalize_repository_nodeids($db): bool
 {
     $table = $db->prefix('wggithub_repositories');
-    $run = static fn(string $sql): bool => (bool) (\method_exists($db, 'exec') ? $db->exec($sql) : $db->queryF($sql));
-    if (!$run('SET @wggithub_sql_mode = @@SESSION.sql_mode')
-        || !$run("SET SESSION sql_mode = CONCAT_WS(',', NULLIF(@@SESSION.sql_mode, ''), 'STRICT_ALL_TABLES')")) {
+    if (false != $db->exec('SET @wggithub_sql_mode = @@SESSION.sql_mode')
+        || false != $db->exec("SET SESSION sql_mode = CONCAT_WS(',', NULLIF(@@SESSION.sql_mode, ''), 'STRICT_ALL_TABLES')")) {
         return false;
     }
-    $altered = $run("ALTER TABLE `$table` MODIFY repo_nodeid VARBINARY(255) NULL DEFAULT NULL");
-    $restored = $run('SET SESSION sql_mode = @wggithub_sql_mode');
+    $altered = $db->exec("ALTER TABLE `$table` MODIFY repo_nodeid VARBINARY(255) NULL DEFAULT NULL");
+    $restored = $db->exec('SET SESSION sql_mode = @wggithub_sql_mode');
 
-    return $altered && $restored && $run("UPDATE `$table` SET repo_nodeid = NULL WHERE repo_nodeid = ''");
+    return $altered && $restored && $db->exec("UPDATE `$table` SET repo_nodeid = NULL WHERE repo_nodeid = ''");
 }
 
 /**

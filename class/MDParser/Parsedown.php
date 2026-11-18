@@ -17,6 +17,8 @@ namespace XoopsModules\Wggithub\MDParser;
 #
 #
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 class Parsedown
 {
     # ~

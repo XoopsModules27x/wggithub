@@ -26,7 +26,7 @@ use XoopsModules\Wggithub\{
     Common\Confirm
 };
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // It recovered the value of argument op in URL$
 $op    = Request::getCmd('op', 'list');
 $relId = Request::getInt('rel_id');
@@ -108,7 +108,7 @@ switch ($op) {
         $releasesObj->setVar('rel_submitter', Request::getInt('rel_submitter', 0));
         // Insert Data
         if ($releasesHandler->insert($releasesObj)) {
-            \redirect_header('releases.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
+            \redirect_header('releases.php?op=list&start=' . $start . '&limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
         }
         // Get Form
         $GLOBALS['xoopsTpl']->assign('error', $releasesObj->getHtmlErrors());
@@ -129,7 +129,7 @@ switch ($op) {
         $templateMain = 'wggithub_admin_releases.tpl';
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('releases.php'));
         $releasesObj = $releasesHandler->get($relId);
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('releases.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -149,4 +149,4 @@ switch ($op) {
         }
         break;
 }
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

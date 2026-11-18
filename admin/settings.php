@@ -26,7 +26,7 @@ use XoopsModules\Wggithub\{
     Github\GithubClient
 };
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // It recovered the value of argument op in URL$
 $op    = Request::getCmd('op', 'list');
 $setId = Request::getInt('set_id');
@@ -103,7 +103,7 @@ switch ($op) {
                 $setId = $setId > 0 ? $setId : $newSetId;
                 $settingsHandler->setPrimarySetting($setId);
             }
-            \redirect_header('settings.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
+            \redirect_header('settings.php?op=list&start=' . $start . '&limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
         }
         // Get Form
         $GLOBALS['xoopsTpl']->assign('error', $settingsObj->getHtmlErrors());
@@ -126,7 +126,7 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('settings.php'));
         $settingsObj = $settingsHandler->get($setId);
         $setToken = $settingsObj->getVar('set_token');
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('settings.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -168,4 +168,4 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('info1', $info);
         break;
 }
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

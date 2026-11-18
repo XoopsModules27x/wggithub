@@ -191,3 +191,6 @@ include_once __DIR__ . '/main.php';
 \define('_AM_WGGITHUB_DONATION_AMOUNT', 'Spendenbetrag');
 \define('_AM_WGGITHUB_MAINTAINEDBY', ' wird unterstützt von ');
 // ---------------- End ----------------
+// version 1.6.0
+\define('_AM_WGGITHUB_BROKEN_RESULT', 'Ungültiges Ergebnis in %s');
+\define('_AM_WGGITHUB_BROKEN_NODATA', 'Keine Daten verfügbar für %s');

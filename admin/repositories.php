@@ -26,7 +26,7 @@ use XoopsModules\Wggithub\{
     Common\Confirm
 };
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // It recovered the value of argument op in URL$
 $op     = Request::getCmd('op', 'list');
 $repoId = Request::getInt('repo_id');
@@ -125,7 +125,7 @@ switch ($op) {
         $repositoriesObj->setVar('repo_submitter', Request::getInt('repo_submitter', 0));
         // Insert Data
         if ($repositoriesHandler->insert($repositoriesObj)) {
-            \redirect_header('repositories.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
+            \redirect_header('repositories.php?op=list&start=' . $start . '&limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
         }
         // Get Form
         $GLOBALS['xoopsTpl']->assign('error', $repositoriesObj->getHtmlErrors());
@@ -147,7 +147,7 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('repositories.php'));
         $repositoriesObj = $repositoriesHandler->get($repoId);
         $repoName = $repositoriesObj->getVar('repo_name');
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('repositories.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -171,9 +171,9 @@ switch ($op) {
             $repositoriesObj->setVar(Request::getString('field'), Request::getInt('value', 0));
             // Insert Data
             if ($repositoriesHandler->insert($repositoriesObj, true)) {
-                \redirect_header('repositories.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
+                \redirect_header('repositories.php?op=list&start=' . $start . '&limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
             }
         }
         break;
 }
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

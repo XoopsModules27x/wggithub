@@ -20,6 +20,8 @@
  * @author         Goffy - XOOPS Development Team - Email:<goffy@wedega.com> - Website:<https://wedega.com>
  */
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 /**
  * comment callback functions
  *
@@ -44,6 +46,9 @@ function wggithub_notify_iteminfo($category, $item_id)
         case 'repositories':
             $sql          = 'SELECT repo_name FROM ' . $xoopsDB->prefix('wggithub_repositories') . ' WHERE repo_id = '. $item_id;
             $result       = $xoopsDB->query($sql);
+            if (!$xoopsDB->isResultSet($result)) {
+                return null;
+            }
             $result_array = $xoopsDB->fetchArray($result);
             $item['name'] = $result_array['repo_name'];
             $item['url']  = \WGGITHUB_URL . '/repositories.php?repo_id=' . $item_id;

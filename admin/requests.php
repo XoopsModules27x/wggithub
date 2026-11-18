@@ -25,7 +25,7 @@ use XoopsModules\Wggithub\{
     Common\Confirm
 };
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // It recovered the value of argument op in URL$
 $op = Request::getCmd('op', 'list');
 // Request req_id
@@ -114,7 +114,7 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('requests.php'));
         $requestsObj = $requestsHandler->get($reqId);
         $reqRequest = $requestsObj->getVar('req_request');
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('requests.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -133,4 +133,4 @@ switch ($op) {
         }
         break;
 }
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

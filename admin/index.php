@@ -26,7 +26,7 @@ use XoopsModules\Wggithub\{
 };
 
 include_once \dirname(__DIR__) . '/preloads/autoloader.php';
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 
 // Template Index
 $templateMain = 'wggithub_admin_index.tpl';
@@ -80,4 +80,4 @@ if ($helper->getConfig('displaySampleButton')) {
 }
 $GLOBALS['xoopsTpl']->assign('index', $adminObject->displayIndex());
 // End Test Data
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

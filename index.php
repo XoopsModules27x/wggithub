@@ -28,7 +28,7 @@ use XoopsModules\Wggithub\{
     Github\GithubClient
 };
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'wggithub_index.tpl';
 include_once \XOOPS_ROOT_PATH . '/header.php';
 
@@ -36,7 +36,7 @@ include_once \XOOPS_ROOT_PATH . '/header.php';
 $permGlobalView = $permissionsHandler->getPermGlobalView();
 if (!$permGlobalView) {
     $GLOBALS['xoopsTpl']->assign('error', _NOPERM);
-    require __DIR__ . '/footer.php';
+    require_once __DIR__ . '/footer.php';
 }
 $permGlobalRead   = $permissionsHandler->getPermGlobalRead();
 $permReadmeUpdate = $permissionsHandler->getPermReadmeUpdate();
@@ -285,7 +285,7 @@ switch ($op) {
         // Permissions
         if (!$permGlobalRead) {
             $GLOBALS['xoopsTpl']->assign('error', \_NOPERM);
-            require __DIR__ . '/footer.php';
+            require_once __DIR__ . '/footer.php';
         }
         $dirName = Request::getString('dir_name', '');
         $redir   = 'index.php?op=list_afterupdate&amp;frelease=' . $filterRelease . '&amp;fsortby=' . $filterSortby;
@@ -302,7 +302,7 @@ switch ($op) {
         // Permissions
         if (!$permReadmeUpdate) {
             $GLOBALS['xoopsTpl']->assign('error', \_NOPERM);
-            require __DIR__ . '/footer.php';
+            require_once __DIR__ . '/footer.php';
         }
         $repoId   = Request::getInt('repo_id', 0);
         $repoUser = Request::getString('repo_user', 'none');
@@ -329,4 +329,4 @@ wggithubMetaDescription(\_MA_WGGITHUB_INDEX_DESC);
 $GLOBALS['xoopsTpl']->assign('xoops_mpageurl', \WGGITHUB_URL.'/index.php');
 $GLOBALS['xoopsTpl']->assign('xoops_icons32_url', XOOPS_ICONS32_URL);
 $GLOBALS['xoopsTpl']->assign('wggithub_upload_url', \WGGITHUB_UPLOAD_URL);
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';
