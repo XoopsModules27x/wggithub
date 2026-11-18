@@ -27,7 +27,7 @@ use XoopsModules\Wggithub\ {
     Github\GithubClient
 };
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // It recovered the value of argument op in URL$
 $op    = Request::getCmd('op', 'list');
 $dirId = Request::getInt('dir_id');
@@ -103,7 +103,7 @@ switch ($op) {
         $directoriesObj->setVar('dir_submitter', Request::getInt('dir_submitter', 0));
         // Insert Data
         if ($directoriesHandler->insert($directoriesObj)) {
-            \redirect_header('directories.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
+            \redirect_header('directories.php?op=list&start=' . $start . '&limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
         }
         // Get Form
         $GLOBALS['xoopsTpl']->assign('error', $directoriesObj->getHtmlErrors());
@@ -126,7 +126,7 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('directories.php'));
         $directoriesObj = $directoriesHandler->get($dirId);
         $dirName = $directoriesObj->getVar('dir_name');
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('directories.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -194,12 +194,12 @@ switch ($op) {
             $directoriesObj->setVar(Request::getString('field'), Request::getInt('value', 0));
             // Insert Data
             if ($directoriesHandler->insert($directoriesObj, true)) {
-                \redirect_header('directories.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
+                \redirect_header('directories.php?op=list&start=' . $start . '&limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
             }
         }
         break;
     case 'order':
-        $dorder = $_POST['dorder'];
+        $dorder = Request::getArray('dorder');
         for ($i = 0, $iMax = \count($dorder); $i < $iMax; $i++) {
             $directoriesObj = $directoriesHandler->get($dorder[$i]);
             $directoriesObj->setVar('dir_weight', $i + 1);
@@ -207,4 +207,4 @@ switch ($op) {
         }
         break;
 }
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

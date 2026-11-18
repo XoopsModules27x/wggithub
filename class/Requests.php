@@ -23,6 +23,8 @@ namespace XoopsModules\Wggithub;
  * @author         TDM XOOPS - Email:<goffy@wedega.com> - Website:<https://wedega.com>
  */
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 use XoopsModules\Wggithub;
 
 \defined('\XOOPS_ROOT_PATH') || die('Restricted access');

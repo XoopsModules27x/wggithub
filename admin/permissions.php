@@ -25,7 +25,7 @@ use XoopsModules\Wggithub\{
     Constants
 };
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 
 // Template Index
 $templateMain = 'wggithub_admin_permissions.tpl';
@@ -62,4 +62,4 @@ if (true !== $permFound) {
     exit();
 }
 
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

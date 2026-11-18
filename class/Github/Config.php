@@ -20,6 +20,8 @@ namespace XoopsModules\Wggithub\Github;
  * @author       Goffy - XOOPS Development Team
  */
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 /**
  * Class GitHub
  */

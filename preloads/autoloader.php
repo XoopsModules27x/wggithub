@@ -1,4 +1,8 @@
 <?php
+/**
+ * @copyright   XOOPS Project (https://xoops.org)
+ * @license     GPL-2.0-or-later (https://www.gnu.org/licenses/gpl-2.0.html)
+ */
 
 require_once \dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -29,7 +33,7 @@ spl_autoload_register(
         $file = $baseDir . \str_replace('\\', '/', $relativeClass) . '.php';
 
         // if the file exists, require it
-        if (\file_exists($file)) {
+        if (\file_exists($file) && is_file($file)) {
             require $file;
         }
     }

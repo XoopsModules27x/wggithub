@@ -26,7 +26,7 @@ use XoopsModules\Wggithub\{
 };
 
 
-require __DIR__ . '/header.php';
+require_once __DIR__ . '/header.php';
 // It recovered the value of argument op in URL$
 $op    = Request::getCmd('op', 'list');
 $logId = Request::getInt('log_id');
@@ -85,7 +85,7 @@ switch ($op) {
         $logsObj->setVar('log_submitter', Request::getInt('log_submitter', 0));
         // Insert Data
         if ($logsHandler->insert($logsObj)) {
-            \redirect_header('logs.php?op=list&amp;start=' . $start . '&amp;limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
+            \redirect_header('logs.php?op=list&start=' . $start . '&limit=' . $limit, 2, \_AM_WGGITHUB_FORM_OK);
         }
         // Get Form
         $GLOBALS['xoopsTpl']->assign('error', $logsObj->getHtmlErrors());
@@ -106,7 +106,7 @@ switch ($op) {
         $templateMain = 'wggithub_admin_logs.tpl';
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('logs.php'));
         $logsObj = $logsHandler->get($logId);
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('logs.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -129,7 +129,7 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('logs.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_LOGS_LIST, 'logs.php', 'list');
         $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
-        if (isset($_REQUEST['ok']) && 1 == $_REQUEST['ok']) {
+        if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('logs.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));
             }
@@ -145,4 +145,4 @@ switch ($op) {
         }
         break;
 }
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

@@ -24,6 +24,8 @@ namespace XoopsModules\Wggithub;
  */
 
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 use XoopsModules\Wggithub\{
     Github\GithubClient,
     MDParser\Parsedown
@@ -270,7 +272,7 @@ class ReadmesHandler extends \XoopsPersistableObjectHandler
         $sql .= ' ON ' . $GLOBALS['xoopsDB']->prefix('wggithub_repositories') . '.repo_id = ' . $GLOBALS['xoopsDB']->prefix('wggithub_readmes') . '.rm_repoid ';
         $sql .= 'SET ' . $GLOBALS['xoopsDB']->prefix('wggithub_repositories') . '.repo_readme = 1 ';
         $sql .= 'WHERE (((' . $GLOBALS['xoopsDB']->prefix('wggithub_readmes') . '.rm_id)>0));';
-        $GLOBALS['xoopsDB']->queryF($sql);
+        $GLOBALS['xoopsDB']->exec($sql);
 
         return true;
     }

@@ -29,7 +29,7 @@ $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
 // ------------------- Informations ------------------- //
 $modversion = [
     'name'                => \_MI_WGGITHUB_NAME,
-    'version'             => '1.5.3',
+    'version'             => '1.6.0',
     'module_status'       => 'Beta1',
     'description'         => \_MI_WGGITHUB_DESC,
     'author'              => 'Goffy - XOOPS Development Team',
@@ -42,11 +42,11 @@ $modversion = [
     'help'                => 'page=help',
     'release_info'        => 'release_info',
     'release_file'        => \XOOPS_URL . '/modules/wggithub/docs/release_info file',
-    'release_date'        => '2022/08/08',
+    'release_date'        => '2026/11/18',
     'manual'              => 'link to manual file',
     'manual_file'         => \XOOPS_URL . '/modules/wggithub/docs/install.txt',
-    'min_php'             => '8.2',
-    'min_xoops'           => '2.5.11 Stable',
+    'min_php'             => '8.4',
+    'min_xoops'           => '2.7.4',
     'min_admin'           => '1.2',
     'min_db'              => ['mysql' => '5.5', 'mysqli' => '5.6'],
     'image'               => 'assets/images/logoModule.png',
@@ -62,7 +62,7 @@ $modversion = [
     'support_name'        => 'Support Forum',
     'module_website_url'  => 'www.xoops.org',
     'module_website_name' => 'XOOPS Project',
-    'release'             => '2023-03-20',
+    'release'             => '2026-11-18',
     'system_menu'         => 1,
     'hasAdmin'            => 1,
     'hasMain'             => 1,
@@ -238,7 +238,7 @@ $modversion['config'][] = [
     'formtype'    => 'select',
     'valuetype'   => 'int',
     'default'     => 1,
-    'options'     => ['_AM_WGGITHUB_FILTER_TYPE_ALL' => 1, '_AM_WGGITHUB_FILTER_TYPE_RELEASES' => 2],
+    'options'     => ['_MI_WGGITHUB_FILTER_TYPE_ALL' => 1, '_MI_WGGITHUB_FILTER_TYPE_RELEASES' => 2],
 ];
 // Show breadcrumb
 $modversion['config'][] = [

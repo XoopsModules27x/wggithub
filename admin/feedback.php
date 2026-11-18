@@ -24,7 +24,7 @@ use XoopsModules\Wggithub\ {
     Common\ModuleFeedback
 };
 
-include __DIR__ . '/header.php';
+include_once __DIR__ . '/header.php';
 
 $adminObject = \Xmf\Module\Admin::getInstance();
 
@@ -97,4 +97,4 @@ switch ($op) {
 
         break;
 }
-require __DIR__ . '/footer.php';
+require_once __DIR__ . '/footer.php';

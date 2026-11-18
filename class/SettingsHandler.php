@@ -23,6 +23,8 @@ namespace XoopsModules\Wggithub;
  * @author         Goffy - XOOPS Development Team - Email:<goffy@wedega.com> - Website:<https://wedega.com>
  */
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 use XoopsModules\Wggithub;
 
 
@@ -159,7 +161,7 @@ class SettingsHandler extends \XoopsPersistableObjectHandler
 
         // reset all
         $strSQL = 'UPDATE ' . $GLOBALS['xoopsDB']->prefix('wggithub_settings') . ' SET ' . $GLOBALS['xoopsDB']->prefix('wggithub_settings') . '.set_primary = 0';
-        $GLOBALS['xoopsDB']->queryF($strSQL);
+        $GLOBALS['xoopsDB']->exec($strSQL);
         // Set Vars
         $settingsObj->setVar('set_primary', 1);
         // Insert Data

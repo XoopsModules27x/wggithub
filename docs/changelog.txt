@@ -1,13 +1,19 @@
 ===================================================================
 2025/06/21 Version 1.5.3 Beta1
 ===================================================================
-- use Composer for GitHub API library & moving it to /vendor (mamba)
-- namespace cosmetics (mamba)
-- replaced tpl for user side (goffy)
-- removed unneccessary tpl files (goffy)
-- fixed non shown module images (goffy)
-- removed preferences not used anymore: numb_col, table_type,
-    panel_type and dividedby (goffy)
+ - use Composer for GitHub API library & moving it to /vendor (mamba)
+ - namespace cosmetics (mamba)
+ - replaced tpl for user side (goffy)
+ - removed unneccessary tpl files (goffy)
+ - fixed non shown module images (goffy)
+ - removed preferences not used anymore: numb_col, table_type,
+        panel_type and dividedby (goffy)
+ - removed unused functions wggithub_RewriteUrl, wggithub_Filter
+        wggithubGetMyItemIds and wggithub_block_addCatSelect (goffy)
+ - replaced queryF (goffy)
+ - replaced hard-coded HTTP status line (goffy)
+ - changed include/require into include_once/require_once (goffy)
+ - replaced superglobals by Xmf/Request (goffy)
 
 ===================================================================
 2023/04/13 Version 1.5.2 RC1

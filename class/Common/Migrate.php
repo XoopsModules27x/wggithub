@@ -23,6 +23,8 @@ namespace XoopsModules\Wggithub\Common;
  * @link      https://xoops.org
  */
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 class Migrate extends \Xmf\Database\Migrate
 {
     private $renameTables;

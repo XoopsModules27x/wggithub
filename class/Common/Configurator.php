@@ -23,6 +23,8 @@ namespace XoopsModules\Wggithub\Common;
 
 // require_once \dirname(\dirname(__DIR__)) . '/include/common.php';
 
+defined('XOOPS_ROOT_PATH') || exit('Restricted access');
+
 /**
  * Class Configurator
  */
