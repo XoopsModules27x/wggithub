@@ -240,46 +240,6 @@ $modversion['config'][] = [
     'default'     => 1,
     'options'     => ['_AM_WGGITHUB_FILTER_TYPE_ALL' => 1, '_AM_WGGITHUB_FILTER_TYPE_RELEASES' => 2],
 ];
-// Number column
-$modversion['config'][] = [
-    'name'        => 'numb_col',
-    'title'       => '_MI_WGGITHUB_NUMB_COL',
-    'description' => '_MI_WGGITHUB_NUMB_COL_DESC',
-    'formtype'    => 'select',
-    'valuetype'   => 'int',
-    'default'     => 1,
-    'options'     => [1 => '1', 2 => '2', 3 => '3', 4 => '4'],
-];
-// Divide by
-$modversion['config'][] = [
-    'name'        => 'divideby',
-    'title'       => '_MI_WGGITHUB_DIVIDEBY',
-    'description' => '_MI_WGGITHUB_DIVIDEBY_DESC',
-    'formtype'    => 'select',
-    'valuetype'   => 'int',
-    'default'     => 1,
-    'options'     => [1 => '1', 2 => '2', 3 => '3', 4 => '4'],
-];
-// Table type
-$modversion['config'][] = [
-    'name'        => 'table_type',
-    'title'       => '_MI_WGGITHUB_TABLE_TYPE',
-    'description' => '_MI_WGGITHUB_DIVIDEBY_DESC',
-    'formtype'    => 'select',
-    'valuetype'   => 'int',
-    'default'     => 'bordered',
-    'options'     => ['bordered' => 'bordered', 'striped' => 'striped', 'hover' => 'hover', 'condensed' => 'condensed'],
-];
-// Panel by
-$modversion['config'][] = [
-    'name'        => 'panel_type',
-    'title'       => '_MI_WGGITHUB_PANEL_TYPE',
-    'description' => '_MI_WGGITHUB_PANEL_TYPE_DESC',
-    'formtype'    => 'select',
-    'valuetype'   => 'text',
-    'default'     => 'default',
-    'options'     => ['default' => 'default', 'primary' => 'primary', 'success' => 'success', 'info' => 'info', 'warning' => 'warning', 'danger' => 'danger'],
-];
 // Show breadcrumb
 $modversion['config'][] = [
     'name'        => 'show_breadcrumbs',

@@ -271,8 +271,6 @@ switch ($op) {
             unset($crDirectories, $directories);
 
             $GLOBALS['xoopsTpl']->assign('lang_thereare', \sprintf(\_MA_WGGITHUB_INDEX_THEREARE, $directoriesCount));
-            $GLOBALS['xoopsTpl']->assign('divideby', $helper->getConfig('divideby'));
-            $GLOBALS['xoopsTpl']->assign('numb_col', $helper->getConfig('numb_col'));
             $GLOBALS['xoopsTpl']->assign('showBtnAll', (Constants::FILTER_TYPE_ALL == $helper->getConfig('filter_type')));
         }
 
@@ -322,8 +320,6 @@ switch ($op) {
         $GLOBALS['xoopsTpl']->assign('error', $error);
         break;
 }
-
-$GLOBALS['xoopsTpl']->assign('table_type', $helper->getConfig('table_type'));
 
 // Keywords
 wggithubMetaKeywords($helper->getConfig('keywords') . ', ' . \implode(',', $keywords));
