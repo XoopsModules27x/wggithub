@@ -181,3 +181,14 @@
 \define('_CO_WGGITHUB_TOTAL_PUBLISHED', 'Veröffentlicht');
 \define('_CO_WGGITHUB_TOTAL_REJECTED', 'Zurückgewiesen');
 \define('_CO_WGGITHUB_TOTAL_SUBMITTED', 'Eingesendet');
+
+//DirectoryChecker
+\define('_CO_WGGITHUB_DC_AVAILABLE', "<span style='color: green;'>Verfügbar</span>");
+\define('_CO_WGGITHUB_DC_NOTAVAILABLE', "<span style='color: red;'>Nicht verfügbar</span>");
+\define('_CO_WGGITHUB_DC_NOTWRITABLE', "<span style='color: red;'>Sollte Berechtigung haben ( %d ), aber es hat ( %d )</span>");
+\define('_CO_WGGITHUB_DC_CREATETHEDIR', 'Estelle es');
+\define('_CO_WGGITHUB_DC_SETMPERM', 'Setze Berechtigung');
+\define('_CO_WGGITHUB_DC_DIRCREATED', 'Das Verzeichnis wurde erstellt');
+\define('_CO_WGGITHUB_DC_DIRNOTCREATED', 'Das Verzeichnis konnte nicht erstellt werden');
+\define('_CO_WGGITHUB_DC_PERMSET', 'Berechtigung wurde gesetzt');
+\define('_CO_WGGITHUB_DC_PERMNOTSET', 'Berechtigung konnte nicht gesetzt werden');

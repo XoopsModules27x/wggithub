@@ -56,7 +56,7 @@ class DirectoryChecker
         $moduleDirNameUpper = \mb_strtoupper($moduleDirName);
         if (!@\is_dir($path)) {
             $path_status = "<img src='$pathIcon16/0.png' >";
-            $path_status .= "$path (" . \constant('_CO_WGGITHUB_DC_NOTAVAILABLE') . ') ';
+            $path_status .= "$path (" . \_CO_WGGITHUB_DC_NOTAVAILABLE . ') ';
             $path_status .= "<form action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>";
             $path_status .= "<input type='hidden' name='op' value='createdir'>";
             $path_status .= "<input type='hidden' name='path' value='$path'>";
@@ -65,11 +65,11 @@ class DirectoryChecker
             $path_status .= '</form>';
         } elseif (@\is_writable($path)) {
             $path_status = "<img src='$pathIcon16/1.png' >";
-            $path_status .= "$path (" . \constant('_CO_WGGITHUB_DC_AVAILABLE') . ') ';
+            $path_status .= "$path (" . \_CO_WGGITHUB_DC_AVAILABLE . ') ';
             $currentMode = \mb_substr(\decoct(\fileperms($path)), 2);
             if ($currentMode != \decoct($mode)) {
                 $path_status = "<img src='$pathIcon16/0.png' >";
-                $path_status .= $path . \sprintf(\constant('_CO_WGGITHUB_DC_NOTWRITABLE'), \decoct($mode), $currentMode);
+                $path_status .= $path . \sprintf(\_CO_WGGITHUB_DC_NOTWRITABLE, \decoct($mode), $currentMode);
                 $path_status .= "<form action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>";
                 $path_status .= "<input type='hidden' name='op' value='setdirperm'>";
                 $path_status .= "<input type='hidden' name='mode' value='$mode'>";
@@ -81,7 +81,7 @@ class DirectoryChecker
         } else {
             $currentMode = \mb_substr(\decoct(\fileperms($path)), 2);
             $path_status = "<img src='$pathIcon16/0.png' >";
-            $path_status .= $path . \sprintf(\constant('_CO_WGGITHUB_DC_NOTWRITABLE'), \decoct($mode), $currentMode);
+            $path_status .= $path . \sprintf(\_CO_WGGITHUB_DC_NOTWRITABLE, \decoct($mode), $currentMode);
             $path_status .= "<form action='" . $_SERVER['SCRIPT_NAME'] . "' method='post'>";
             $path_status .= "<input type='hidden' name='op' value='setdirperm'>";
             $path_status .= "<input type='hidden' name='mode' value='$mode'>";
@@ -141,7 +141,7 @@ switch ($op) {
         if (\Xmf\Request::hasVar('redirect', 'POST')) {
             $redirect = Request::getString('redirect','','POST');
         }
-        $msg = DirectoryChecker::createDirectory($path) ? \constant('_CO_WGGITHUB_DC_DIRCREATED') : \constant('_CO_WGGITHUB_DC_DIRNOTCREATED');
+        $msg = DirectoryChecker::createDirectory($path) ? \_CO_WGGITHUB_DC_DIRCREATED : \_CO_WGGITHUB_DC_DIRNOTCREATED;
         \redirect_header($redirect, 2, $msg . ': ' . $path);
         break;
     case 'setdirperm':
@@ -154,7 +154,7 @@ switch ($op) {
         if (\Xmf\Request::hasVar('mode', 'POST')) {
             $mode = Request::getInt('mode','','POST');
         }
-        $msg = DirectoryChecker::setDirectoryPermissions($path, $mode) ? \constant('_CO_WGGITHUB_DC_PERMSET') : \constant('_CO_WGGITHUB_DC_PERMNOTSET');
+        $msg = DirectoryChecker::setDirectoryPermissions($path, $mode) ? \_CO_WGGITHUB_DC_PERMSET : \_CO_WGGITHUB_DC_PERMNOTSET;
         \redirect_header($redirect, 2, $msg . ': ' . $path);
         break;
 }

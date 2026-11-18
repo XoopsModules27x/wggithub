@@ -185,3 +185,14 @@
 //Xoops form Delete
 \define('_CO_WGGITHUB_DELETE_CONFIRM', 'Confirm delete');
 \define('_CO_WGGITHUB_DELETE_LABEL', 'Do you really want to delete:');
+
+//DirectoryChecker
+\define('_CO_WGGITHUB_DC_AVAILABLE', "<span style='color: green;'>Available</span>");
+\define('_CO_WGGITHUB_DC_NOTAVAILABLE', "<span style='color: red;'>Not available</span>");
+\define('_CO_WGGITHUB_DC_NOTWRITABLE', "<span style='color: red;'>Should have permission ( %d ), but it has ( %d )</span>");
+\define('_CO_WGGITHUB_DC_CREATETHEDIR', 'Create it');
+\define('_CO_WGGITHUB_DC_SETMPERM', 'Set the permission');
+\define('_CO_WGGITHUB_DC_DIRCREATED', 'The directory has been created');
+\define('_CO_WGGITHUB_DC_DIRNOTCREATED', 'The directory cannot be created');
+\define('_CO_WGGITHUB_DC_PERMSET', 'The permission has been set');
+\define('_CO_WGGITHUB_DC_PERMNOTSET', 'The permission cannot be set');
