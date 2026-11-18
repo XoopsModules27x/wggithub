@@ -3,6 +3,9 @@
 ===================================================================
 - use Composer for GitHub API library & moving it to /vendor (mamba)
 - namespace cosmetics (mamba)
+- replaced tpl for user side (goffy)
+- removed unneccessary tpl files (goffy)
+- fixed non shown module images (goffy)
 
 ===================================================================
 2023/04/13 Version 1.5.2 RC1

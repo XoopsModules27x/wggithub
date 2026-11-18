@@ -43,7 +43,13 @@ $permReadmeUpdate = $permissionsHandler->getPermReadmeUpdate();
 
 $op            = Request::getCmd('op', 'list');
 $filterRelease = Request::getString('frelease', 'any');
-$filterSortby  = Request::getString('fsortby', 'update');
+if (!\in_array($filterRelease, ['final', 'any', 'all'], true)) {
+    $filterRelease = 'any';
+}
+$filterSortby = Request::getString('fsortby', 'update');
+if (!\in_array($filterSortby, ['name', 'update'], true)) {
+    $filterSortby = 'update';
+}
 $repoId        = Request::getInt('repo_id', 0);
 
 $GLOBALS['xoopsTpl']->assign('frelease', $filterRelease);
@@ -51,7 +57,6 @@ $GLOBALS['xoopsTpl']->assign('fsortby', $filterSortby);
 
 // Define Stylesheet
 $GLOBALS['xoTheme']->addStylesheet($style, null);
-$GLOBALS['xoTheme']->addStylesheet(\WGGITHUB_URL . '/assets/css/tabs.css', null);
 $keywords = [];
 // 
 $GLOBALS['xoopsTpl']->assign('xoops_icons32_url', XOOPS_ICONS32_URL);
@@ -92,6 +97,11 @@ switch ($op) {
             }
             unset($repositoriesAll);
             $GLOBALS['xoopsTpl']->assign('repo', $repo);
+
+            if ($helper->getConfig('show_breadcrumbs')) {
+                $xoBreadcrumbs[] = ['title' => $GLOBALS['xoopsModule']->getVar('name'), 'link' => \WGGITHUB_URL . '/'];
+                $xoBreadcrumbs[] = ['title' => $repo['name']];
+            }
         }
         break;
     case 'list':
@@ -266,6 +276,12 @@ switch ($op) {
             $GLOBALS['xoopsTpl']->assign('showBtnAll', (Constants::FILTER_TYPE_ALL == $helper->getConfig('filter_type')));
         }
 
+        if ($helper->getConfig('show_breadcrumbs')) {
+            if (isset($GLOBALS['xoopsModule']) && \is_object($GLOBALS['xoopsModule'])) {
+                $xoBreadcrumbs[] = ['title' => $GLOBALS['xoopsModule']->getVar('name')];
+            }
+        }
+
         break;
     case 'update_dir':
         // Permissions
@@ -308,8 +324,7 @@ switch ($op) {
 }
 
 $GLOBALS['xoopsTpl']->assign('table_type', $helper->getConfig('table_type'));
-// Breadcrumbs
-$xoBreadcrumbs[] = ['title' => \_MA_WGGITHUB_INDEX];
+
 // Keywords
 wggithubMetaKeywords($helper->getConfig('keywords') . ', ' . \implode(',', $keywords));
 unset($keywords);

@@ -20,7 +20,7 @@
  * @author         Goffy - XOOPS Development Team - Email:<goffy@wedega.com> - Website:<https://wedega.com>
  */
 
-if ($helper->getConfig('show_breadcrumbs') && \count($xoBreadcrumbs) > 1) {
+if ($helper->getConfig('show_breadcrumbs') && \count($xoBreadcrumbs) > 0) {
     $GLOBALS['xoopsTpl']->assign('showBreadcrumb', $helper->getConfig('show_breadcrumbs'));
     $GLOBALS['xoopsTpl']->assign('xoBreadcrumbs', $xoBreadcrumbs);
 }
