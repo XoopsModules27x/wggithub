@@ -43,9 +43,9 @@ switch ($op) {
         $start = Request::getInt('start', 0);
         $limit = Request::getInt('limit', $helper->getConfig('adminpager'));
         $templateMain = 'wggithub_admin_settings.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('settings.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('settings.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_ADD_SETTING, 'settings.php?op=new', 'add');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderrButton('left'));
         $settingsCount = $settingsHandler->getCountSettings();
         $settingsAll = $settingsHandler->getAllSettings($start, $limit);
         $GLOBALS['xoopsTpl']->assign('settings_count', $settingsCount);
@@ -70,9 +70,9 @@ switch ($op) {
         break;
     case 'new':
         $templateMain = 'wggithub_admin_settings.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('settings.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('settings.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_SETTINGS_LIST, 'settings.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Form Create
         $settingsObj = $settingsHandler->create();
         $form = $settingsObj->getFormSettings(false, $start, $limit);
@@ -112,10 +112,10 @@ switch ($op) {
         break;
     case 'edit':
         $templateMain = 'wggithub_admin_settings.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('settings.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('settings.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_ADD_SETTING, 'settings.php?op=new', 'add');
         $adminObject->addItemButton(\_AM_WGGITHUB_SETTINGS_LIST, 'settings.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Get Form
         $settingsObj = $settingsHandler->get($setId);
         $form = $settingsObj->getFormSettings(false, $start, $limit);
@@ -123,7 +123,7 @@ switch ($op) {
         break;
     case 'delete':
         $templateMain = 'wggithub_admin_settings.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('settings.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('settings.php'));
         $settingsObj = $settingsHandler->get($setId);
         $setToken = $settingsObj->getVar('set_token');
         if (1 == Request::getInt('ok')) {
@@ -146,10 +146,10 @@ switch ($op) {
         break;
     case 'test':
         $templateMain = 'wggithub_admin_settings.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('settings.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('settings.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_ADD_SETTING, 'settings.php?op=new', 'add');
         $adminObject->addItemButton(\_AM_WGGITHUB_SETTINGS_LIST, 'settings.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
 
         $client = GithubClient::getInstance();
         $result = $client->testApi1('emojis');
