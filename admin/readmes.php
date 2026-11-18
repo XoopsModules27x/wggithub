@@ -42,7 +42,7 @@ switch ($op) {
         // Define Stylesheet
         $GLOBALS['xoTheme']->addStylesheet($style, null);
         $templateMain = 'wggithub_admin_readmes.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('readmes.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('readmes.php'));
 
         $filterValue = '';
         $crReadmes = new \CriteriaCompo();
@@ -129,9 +129,9 @@ switch ($op) {
         break;
     case 'edit':
         $templateMain = 'wggithub_admin_readmes.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('readmes.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('readmes.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_READMES_LIST, 'readmes.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Get Form
         $readmesObj = $readmesHandler->get($rmId);
         $form = $readmesObj->getFormReadmes(false, $start, $limit);
@@ -139,7 +139,7 @@ switch ($op) {
         break;
     case 'delete':
         $templateMain = 'wggithub_admin_readmes.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('readmes.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('readmes.php'));
         $readmesObj = $readmesHandler->get($rmId);
         if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {

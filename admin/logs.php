@@ -41,9 +41,9 @@ switch ($op) {
         // Define Stylesheet
         $GLOBALS['xoTheme']->addStylesheet($style, null);
         $templateMain = 'wggithub_admin_logs.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('logs.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('logs.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_LOG_CLEAR, 'logs.php?op=clear', 'delete');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         $logsCount = $logsHandler->getCountLogs();
         $logsAll = $logsHandler->getAllLogs($start, $limit);
         $GLOBALS['xoopsTpl']->assign('logs_count', $logsCount);
@@ -94,9 +94,9 @@ switch ($op) {
         break;
     case 'edit':
         $templateMain = 'wggithub_admin_logs.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('logs.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('logs.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_LOGS_LIST, 'logs.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Get Form
         $logsObj = $logsHandler->get($logId);
         $form = $logsObj->getFormLogs(false, $start, $limit);
@@ -104,7 +104,7 @@ switch ($op) {
         break;
     case 'delete':
         $templateMain = 'wggithub_admin_logs.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('logs.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('logs.php'));
         $logsObj = $logsHandler->get($logId);
         if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
@@ -126,9 +126,9 @@ switch ($op) {
         break;
     case 'clear':
         $templateMain = 'wggithub_admin_logs.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('logs.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('logs.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_LOGS_LIST, 'logs.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
                 \redirect_header('logs.php', 3, \implode(', ', $GLOBALS['xoopsSecurity']->getErrors()));

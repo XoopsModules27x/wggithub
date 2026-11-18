@@ -29,7 +29,7 @@ require_once __DIR__ . '/header.php';
 
 // Template Index
 $templateMain = 'wggithub_admin_permissions.tpl';
-$GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('permissions.php'));
+$GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('permissions.php'));
 
 $op = Request::getCmd('op', 'global');
 

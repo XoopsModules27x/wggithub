@@ -41,7 +41,7 @@ switch ($op) {
         // Define Stylesheet
         $GLOBALS['xoTheme']->addStylesheet($style, null);
         $templateMain = 'wggithub_admin_releases.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('releases.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('releases.php'));
 
         $filterValue = '';
         $crReleases = new \CriteriaCompo();
@@ -117,9 +117,9 @@ switch ($op) {
         break;
     case 'edit':
         $templateMain = 'wggithub_admin_releases.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('releases.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('releases.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_RELEASES_LIST, 'releases.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Get Form
         $releasesObj = $releasesHandler->get($relId);
         $form = $releasesObj->getFormReleases(false, $start, $limit);
@@ -127,7 +127,7 @@ switch ($op) {
         break;
     case 'delete':
         $templateMain = 'wggithub_admin_releases.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('releases.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('releases.php'));
         $releasesObj = $releasesHandler->get($relId);
         if (1 == Request::getInt('ok')) {
             if (!$GLOBALS['xoopsSecurity']->check()) {
