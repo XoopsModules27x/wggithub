@@ -6,7 +6,8 @@
 - replaced tpl for user side (goffy)
 - removed unneccessary tpl files (goffy)
 - fixed non shown module images (goffy)
-- removed preferences not used anymore: numb_col, table_type, panel_type (goffy)
+- removed preferences not used anymore: numb_col, table_type,
+    panel_type and dividedby (goffy)
 
 ===================================================================
 2023/04/13 Version 1.5.2 RC1
