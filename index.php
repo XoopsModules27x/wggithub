@@ -97,7 +97,7 @@ switch ($op) {
             }
             unset($repositoriesAll);
             $GLOBALS['xoopsTpl']->assign('repo', $repo);
-            
+
             if ($helper->getConfig('show_breadcrumbs')) {
                 $xoBreadcrumbs[] = ['title' => $GLOBALS['xoopsModule']->getVar('name'), 'link' => \WGGITHUB_URL . '/'];
                 $xoBreadcrumbs[] = ['title' => $repo['name']];
