@@ -32,9 +32,7 @@ $helper = Helper::getInstance();
 
 // Breadcrumbs
 $xoBreadcrumbs = [];
-if ($helper->getConfig('show_breadcrumbs') && isset($GLOBALS['xoopsModule']) && \is_object($GLOBALS['xoopsModule'])) {
-    $xoBreadcrumbs[] = ['title' => $GLOBALS['xoopsModule']->getVar('name')];
-}
+
 // Get instance of module
 $settingsHandler = $helper->getHandler('Settings');
 $repositoriesHandler = $helper->getHandler('Repositories');

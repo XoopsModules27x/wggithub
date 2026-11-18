@@ -97,6 +97,11 @@ switch ($op) {
             }
             unset($repositoriesAll);
             $GLOBALS['xoopsTpl']->assign('repo', $repo);
+            
+            if ($helper->getConfig('show_breadcrumbs')) {
+                $xoBreadcrumbs[] = ['title' => $GLOBALS['xoopsModule']->getVar('name'), 'link' => \WGGITHUB_URL . '/'];
+                $xoBreadcrumbs[] = ['title' => $repo['name']];
+            }
         }
         break;
     case 'list':
@@ -269,6 +274,12 @@ switch ($op) {
             $GLOBALS['xoopsTpl']->assign('divideby', $helper->getConfig('divideby'));
             $GLOBALS['xoopsTpl']->assign('numb_col', $helper->getConfig('numb_col'));
             $GLOBALS['xoopsTpl']->assign('showBtnAll', (Constants::FILTER_TYPE_ALL == $helper->getConfig('filter_type')));
+        }
+
+        if ($helper->getConfig('show_breadcrumbs')) {
+            if (isset($GLOBALS['xoopsModule']) && \is_object($GLOBALS['xoopsModule'])) {
+                $xoBreadcrumbs[] = ['title' => $GLOBALS['xoopsModule']->getVar('name')];
+            }
         }
 
         break;
