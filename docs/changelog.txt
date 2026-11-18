@@ -14,6 +14,10 @@
  - replaced hard-coded HTTP status line (goffy)
  - changed include/require into include_once/require_once (goffy)
  - replaced superglobals by Xmf/Request (goffy)
+ - removed unused files: admin/requests.php, class/Requests.php,
+        class/RequestsHandler.php adn admin/broken.php,
+        templates/admin/wggithub_admin_broken.tpl,
+        templates/admin/wggithub_admin_requests.tpl (goffy)
 
 ===================================================================
 2023/04/13 Version 1.5.2 RC1
