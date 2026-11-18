@@ -44,9 +44,9 @@ switch ($op) {
         $GLOBALS['xoTheme']->addScript(\WGGITHUB_URL . '/assets/js/jquery-ui.js');
         $GLOBALS['xoTheme']->addScript(\WGGITHUB_URL . '/assets/js/sortable.js');
         $templateMain = 'wggithub_admin_directories.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('directories.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('directories.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_ADD_DIRECTORY, 'directories.php?op=new', 'add');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         $directoriesCount = $directoriesHandler->getCountDirectories();
         $directoriesAll = $directoriesHandler->getAllDirectories($start, $limit);
         $GLOBALS['xoopsTpl']->assign('directories_count', $directoriesCount);
@@ -72,9 +72,9 @@ switch ($op) {
         break;
     case 'new':
         $templateMain = 'wggithub_admin_directories.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('directories.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('directories.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_DIRECTORIES_LIST, 'directories.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Form Create
         $directoriesObj = $directoriesHandler->create();
         $form = $directoriesObj->getFormDirectories(false, $start, $limit);
@@ -112,10 +112,10 @@ switch ($op) {
         break;
     case 'edit':
         $templateMain = 'wggithub_admin_directories.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('directories.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('directories.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_ADD_DIRECTORY, 'directories.php?op=new', 'add');
         $adminObject->addItemButton(\_AM_WGGITHUB_DIRECTORIES_LIST, 'directories.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Get Form
         $directoriesObj = $directoriesHandler->get($dirId);
         $form = $directoriesObj->getFormDirectories(false, $start, $limit);
@@ -123,7 +123,7 @@ switch ($op) {
         break;
     case 'delete':
         $templateMain = 'wggithub_admin_directories.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('directories.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('directories.php'));
         $directoriesObj = $directoriesHandler->get($dirId);
         $dirName = $directoriesObj->getVar('dir_name');
         if (1 == Request::getInt('ok')) {
