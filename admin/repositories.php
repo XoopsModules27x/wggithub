@@ -42,7 +42,7 @@ switch ($op) {
         // Define Stylesheet
         $GLOBALS['xoTheme']->addStylesheet($style, null);
         $templateMain = 'wggithub_admin_repositories.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('repositories.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('repositories.php'));
 
         $autoApproved = (int)$helper->getConfig('autoapproved');
         $GLOBALS['xoopsTpl']->assign('autoApproved', !$autoApproved);
@@ -134,9 +134,9 @@ switch ($op) {
         break;
     case 'edit':
         $templateMain = 'wggithub_admin_repositories.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('repositories.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('repositories.php'));
         $adminObject->addItemButton(\_AM_WGGITHUB_REPOSITORIES_LIST, 'repositories.php', 'list');
-        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->displayButton('left'));
+        $GLOBALS['xoopsTpl']->assign('buttons', $adminObject->renderButton('left'));
         // Get Form
         $repositoriesObj = $repositoriesHandler->get($repoId);
         $form = $repositoriesObj->getFormRepositories(false, $start, $limit);
@@ -144,7 +144,7 @@ switch ($op) {
         break;
     case 'delete':
         $templateMain = 'wggithub_admin_repositories.tpl';
-        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->displayNavigation('repositories.php'));
+        $GLOBALS['xoopsTpl']->assign('navigation', $adminObject->renderNavigation('repositories.php'));
         $repositoriesObj = $repositoriesHandler->get($repoId);
         $repoName = $repositoriesObj->getVar('repo_name');
         if (1 == Request::getInt('ok')) {
